@@ -1,0 +1,49 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "service",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-08-18",
+  "compatibility_flags": ["nodejs_compat"],
+  "vars": {
+    "CLIENT_URL": "http://localhost:5173",
+    "BASE_URL": "http://localhost:3000",
+    "NODE_ENV": "development",
+  },
+  "env": {
+    "production": {
+      "vars": {
+        "CLIENT_URL": "https://your-production-client-url.com",
+        "BASE_URL": "https://your-production-base-url.com",
+        "NODE_ENV": "production",
+      },
+    },
+  },
+  // "kv_namespaces": [
+  //   {
+  //     "binding": "MY_KV_NAMESPACE",
+  //     "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  //   }
+  // ],
+  // "r2_buckets": [
+  //   {
+  //     "binding": "MY_BUCKET",
+  //     "bucket_name": "my-bucket"
+  //   }
+  // ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "website-blog",
+      "database_id": "03937f1c-e36b-4cd7-b17f-b5240e4c3241",
+      "migrations_dir": "src/db/migrations",
+    },
+  ],
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1,
+  },
+  "dev": {
+    "port": 3000,
+    "local_protocol": "http",
+  },
+}

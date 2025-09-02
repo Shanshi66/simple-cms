@@ -1,0 +1,25 @@
+{
+  "extends": "@repo/tsconfig/react.json",
+  "include": [
+    ".react-router/types/**/*",
+    "app/**/*",
+    "workers/**/*",
+    "worker-configuration.d.ts",
+    "vite-env.d.ts",
+    "react-router.config.ts",
+    "vite.config.ts"
+  ],
+  "compilerOptions": {
+    "types": ["vite/client"],
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "rootDirs": [".", "./.react-router/types"],
+    "paths": {
+      "@/*": ["./app/*"],
+      "@/content/*": ["./content/*"]
+    }
+  }
+}

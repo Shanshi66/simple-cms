@@ -1,0 +1,35 @@
+{
+  "name": "@repo/types",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "check-types": "tsc --noEmit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.15.0",
+  "devDependencies": {
+    "@repo/eslint": "workspace:*",
+    "@repo/tsconfig": "workspace:*",
+    "@types/react": "^19.1.11",
+    "eslint": "^9.33.0",
+    "lint-staged": "^16.1.5",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.2"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./cms": "./src/cms.ts",
+    "./api": "./src/api.ts",
+    "./errors": "./src/errors.ts",
+    "./auth": "./src/auth.ts",
+    "./i18n": "./src/i18n/index.ts",
+    "./ui": "./src/ui/index.ts"
+  },
+  "dependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  }
+}

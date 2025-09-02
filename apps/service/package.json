@@ -1,0 +1,44 @@
+{
+  "name": "service",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "build": "tsc && wrangler deploy --dry-run",
+    "deploy": "wrangler deploy --minify",
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings",
+    "check-types": "tsc --noEmit",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "^0.7.2",
+    "@repo/types": "workspace:*",
+    "@repo/utils": "workspace:*",
+    "better-auth": "^1.3.7",
+    "dotenv": "^17.2.1",
+    "drizzle-orm": "^0.44.4",
+    "hono": "^4.9.4",
+    "zod": "^4.1.4"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250822.0",
+    "@repo/eslint": "workspace:*",
+    "@repo/tsconfig": "workspace:*",
+    "@types/node": "^20.19.11",
+    "@vitest/ui": "^3.2.4",
+    "c8": "^10.1.3",
+    "drizzle-kit": "^0.31.4",
+    "eslint": "^9.33.0",
+    "lint-staged": "^16.1.5",
+    "prettier": "^3.6.2",
+    "tsx": "^4.20.4",
+    "typescript": "^5.9.2",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.2.4",
+    "wrangler": "^4.32.0"
+  }
+}

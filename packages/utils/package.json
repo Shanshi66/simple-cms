@@ -1,0 +1,36 @@
+{
+  "name": "@repo/utils",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "scripts": {
+    "build": "tsc",
+    "check-types": "tsc --noEmit",
+    "test": "vitest",
+    "test:run": "vitest run"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.3.1"
+  },
+  "devDependencies": {
+    "@repo/eslint": "workspace:*",
+    "@repo/tsconfig": "workspace:*",
+    "eslint": "^9.33.0",
+    "lint-staged": "^16.1.5",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./id": "./src/id.ts",
+    "./slug": "./src/slug.ts",
+    "./validation": "./src/validation.ts",
+    "./time": "./src/time.ts",
+    "./style": "./src/style.ts"
+  }
+}
