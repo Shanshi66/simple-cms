@@ -12,11 +12,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `pnpm build` - Build all apps and packages
 - `pnpm lint` - Lint all packages
 - `pnpm check-types` - Type check all packages
-- `pnpm format` - Format all files with Prettier
 
 ### Web App Specific
 
-- `pnpm --filter=web typecheck` - Generate types and run TypeScript checks
+- `pnpm --filter=web check-types` - Generate types and run TypeScript checks
 - `pnpm --filter=web cf-typegen` - Generate Cloudflare Workers types
 - `pnpm --filter=web deploy` - Build and deploy to Cloudflare Pages
 
@@ -25,6 +24,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `pnpm --filter=service db:generate` - Generate database migrations
 - `pnpm --filter=service db:migrate` - Run database migrations
 - `pnpm --filter=service deploy` - Deploy to Cloudflare Workers
+- `pnpm --filter=service test` - Run tests with Vitest
+- `pnpm --filter=service test:ui` - Run tests with Vitest UI
+- `pnpm --filter=service test:run` - Run tests once
+- `pnpm --filter=service test:coverage` - Run tests with coverage report
 
 ### Package Development
 
@@ -71,6 +74,7 @@ This is a Turborepo monorepo with two main applications and shared packages:
 - Hono framework for API routes
 - Drizzle ORM with Cloudflare D1 (SQLite) database
 - Better Auth for authentication and session management
+- Vitest for testing with UI and coverage support
 - Deployed to Cloudflare Workers
 
 ### Internationalization
@@ -97,9 +101,19 @@ Database uses Drizzle ORM with Cloudflare D1 HTTP driver configured in `drizzle.
 
 The repository uses conventional commits enforced by commitlint:
 
-- Commit types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `revert`, `chore`
+- Commit types: `init`, `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `revert`, `chore`
 - Maximum header length: 100 characters
-- Husky manages pre-commit hooks with lint-staged for code formatting
+- Husky manages pre-commit hooks with lint-staged for automatic ESLint fixes and Prettier formatting
+
+### Code Quality and Linting
+
+The project uses a modern ESLint flat configuration with:
+
+- TypeScript ESLint recommended and stylistic rules
+- Turbo plugin for monorepo-specific linting
+- Strict import rules: no relative imports (`../`, `../../`), no file extensions in imports
+- Prettier integration for consistent code formatting
+- Project-wide type checking with TypeScript service
 
 ### Deployment
 
@@ -109,15 +123,23 @@ Both applications are configured for Cloudflare deployment:
 - Service uses Wrangler for Workers deployment with D1 database
 - Shared worker configuration in `worker-configuration.d.ts`
 - Environment variables required: `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_DATABASE_ID`, `CLOUDFLARE_D1_TOKEN`
+- Package manager: pnpm@10.15.0
+- Node.js version requirement: >=18
 
 ### Development Workflow
 
 1. Run `pnpm install` to install dependencies
-2. Generate Cloudflare types: `pnpm --filter=web cf-typegen` and `pnpm --filter=service cf-typegen`
+2. Generate Cloudflare types: `pnpm --filter=web cf-typegen` and `pnpm --filter=service cf-typegen` (automatically run via postinstall for web app)
 3. Use `pnpm dev` for local development of both apps
-4. Run `pnpm lint` and `pnpm check-types` before commits (automatically enforced by pre-commit hooks)
-5. Database changes require:
+4. Code quality checks:
+   - ESLint and Prettier formatting are automatically applied via lint-staged on pre-commit
+   - Run `pnpm lint` manually for project-wide linting
+   - Run `pnpm check-types` for TypeScript type checking across all packages
+5. Testing:
+   - Service: `pnpm --filter=service test` (Vitest with UI and coverage options)
+   - Utils: `pnpm --filter=utils test` (Vitest)
+6. Database changes require:
    - Update schema files in `apps/service/src/db/schema/`
    - Run `pnpm --filter=service db:generate` to create migrations
    - Run `pnpm --filter=service db:migrate` to apply migrations
-6. Better Auth schema updates: Run `scripts/db.sh` to regenerate auth schema
+7. Better Auth schema updates: Run `scripts/db.sh` to regenerate auth schema
