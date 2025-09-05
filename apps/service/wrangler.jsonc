@@ -34,7 +34,7 @@
     {
       "binding": "DB",
       "database_name": "website-blog",
-      "database_id": "03937f1c-e36b-4cd7-b17f-b5240e4c3241",
+      "database_id": "c17d9a0a-dd4e-44b0-b3ae-51f6915a9a50",
       "migrations_dir": "src/db/migrations",
     },
   ],
