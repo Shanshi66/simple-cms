@@ -6,6 +6,10 @@
       "headers": {
         "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
       }
+    },
+    "mermaid": {
+      "command": "npx",
+      "args": ["-y", "@peng-shawn/mermaid-mcp-server"]
     }
   }
 }
