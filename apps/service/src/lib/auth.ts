@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { CFBindings } from "@/types/bindings";
+import { CFBindings } from "@/types/context";
 import { drizzle } from "drizzle-orm/d1";
 
 export const createAuth = (binding: CFBindings) => {

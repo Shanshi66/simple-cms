@@ -10,4 +10,11 @@ export interface CFBindings {
   NODE_ENV: "development" | "production";
 }
 
-export type HonoContext = Context<{ Bindings: CFBindings }>;
+export interface MiddlewareVars {
+  siteId: string;
+}
+
+export type HonoContext = Context<{
+  Bindings: CFBindings;
+  Variables: MiddlewareVars;
+}>;

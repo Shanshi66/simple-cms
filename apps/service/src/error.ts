@@ -1,7 +1,7 @@
 import { ErrorCode } from "@repo/types/errors";
 import { HTTPException } from "hono/http-exception";
 import type { ContentfulStatusCode, StatusCode } from "hono/utils/http-status";
-import { HonoContext } from "./types/bindings";
+import { HonoContext } from "./types/context";
 import { createErrorResponse } from "@/lib/utils";
 import { ErrorResponse } from "@repo/types/api";
 import z, { ZodError } from "zod";
