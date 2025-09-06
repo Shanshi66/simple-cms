@@ -4,13 +4,13 @@
 
 **Task**
 
-- [ ] 实现完整的数据库表结构，包括sites、api_keys、articles_metadata、articles_content表，以及相应的索引和Drizzle ORM配置
-  - [ ] 1.1 在cms.ts中创建sites表schema定义，包含id、name、description、时间戳字段
-  - [ ] 1.2 在cms.ts中创建api_keys表schema定义，包含密钥哈希、网站关联、过期时间等字段
-  - [ ] 1.3 在cms.ts中创建articles_metadata表schema定义，包含文章元数据和多语言支持
-  - [ ] 1.4 在cms.ts中创建articles_content表schema定义，存储MDX完整内容
-  - [ ] 1.5 设置必要的数据库索引以优化查询性能
-  - [ ] 1.6 配置Drizzle ORM和数据库连接，使用`pnpm db:generate`生成迁移脚本
+- [x] 实现完整的数据库表结构，包括sites、api_keys、articles_metadata、articles_content表，以及相应的索引和Drizzle ORM配置
+  - [x] 1.1 在cms.ts中创建sites表schema定义，包含id、name、description、时间戳字段
+  - [x] 1.2 在cms.ts中创建api_keys表schema定义，包含密钥哈希、网站关联、过期时间等字段
+  - [x] 1.3 在cms.ts中创建articles_metadata表schema定义，包含文章元数据和多语言支持
+  - [x] 1.4 在cms.ts中创建articles_content表schema定义，存储MDX完整内容
+  - [x] 1.5 设置必要的数据库索引以优化查询性能
+  - [x] 1.6 配置Drizzle ORM和数据库连接，使用`pnpm db:generate`生成迁移脚本
 
 **Files**
 
