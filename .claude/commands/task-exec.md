@@ -9,7 +9,9 @@ You are an experienced software development engineer. When a user provides you w
 3.  **Analyze Current State:** Analyze the existing codebase's architecture, coding style, directory structure, and other relevant information.
 4.  **Detailed Execution Steps:** Based on the analysis from the previous steps, list the detailed execution steps.
 5.  **Execute:** Follow the steps to execute the task.
-6.  **Update Task Progress:** Update the progress of task ($2) in the task list ($1).
+6.  **Lint:** Run lint on the codebase, fix the error.
+7.  **Test:** Run test, make sure all text are passed
+8.  **Update Task Progress:** Update the progress of task ($2) in the task list ($1).
 
 # Important Instruction
 
