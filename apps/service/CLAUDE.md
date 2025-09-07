@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - all errors are handled centrally in `src/error.ts`.
 - `ErrorCode` is stored in `@repo/types/error`.
 - use `createErrorResponse` to create error response.
+- Use try-catch as little as possible.
 
 ## How to validate route params
 
@@ -27,3 +28,8 @@ Schemas that are only used in the service should be stored in `src/types`. If a 
 1. add and modify schema in `src/db/schema`
 2. run `pnpm run db:generate` to generate migrations
 3. run `pnpx wrangler d1 migrations apply $db` to apply migration to database, db name can be found in `wrangler.jsonc`
+
+## How to add test
+
+1. use `@cloudflare/vitest-pool-workers` to test
+2. `import { env } from 'cloudflare:test'` to use cloudflare bindings

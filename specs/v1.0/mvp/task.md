@@ -39,12 +39,12 @@
 
 **Task**
 
-- [ ] 实现三个核心API：获取文章列表(元数据)、获取单篇文章详情(完整内容)、创建文章
-  - [ ] 3.1 实现获取文章列表API，使用@hono/zod-validator验证查询参数（语言、状态、分页）
-  - [ ] 3.2 实现获取单篇文章详情API，使用zValidator验证路径参数，JOIN查询获取完整内容
-  - [ ] 3.3 实现创建文章API，使用zValidator验证请求体，集成现有createErrorResponse
-  - [ ] 3.4 定义API请求响应的TypeScript类型接口
-  - [ ] 3.5 编写文章路由和服务层的单元测试，测试验证和错误处理
+- [x] 实现三个核心API：获取文章列表(元数据)、获取单篇文章详情(完整内容)、创建文章
+  - [x] 3.1 实现获取文章列表API，使用@hono/zod-validator验证查询参数（语言、状态、分页）
+  - [x] 3.2 实现获取单篇文章详情API，使用zValidator验证路径参数，JOIN查询获取完整内容
+  - [x] 3.3 实现创建文章API，使用zValidator验证请求体，集成现有createErrorResponse
+  - [x] 3.4 定义API请求响应的TypeScript类型接口
+  - [x] 3.5 编写文章路由和服务层的单元测试，测试验证和错误处理
 
 **Files**
 
