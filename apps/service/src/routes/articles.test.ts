@@ -13,6 +13,7 @@ import {
   articlesMetadata,
   articlesContent,
 } from "@/db/schema/cms";
+import { ErrorCode } from "@repo/types/errors";
 
 describe("Articles Routes", () => {
   let app: Hono<{ Bindings: CFBindings; Variables: MiddlewareVars }>;
@@ -216,6 +217,10 @@ describe("Articles Routes", () => {
       const responseBody = await res.json();
       expect(responseBody).toHaveProperty("success", false);
       expect(responseBody).toHaveProperty("error");
+      expect(responseBody).toHaveProperty(
+        "error.code",
+        ErrorCode.ARTICLE_NOT_FOUND,
+      );
     });
   });
 
@@ -279,6 +284,10 @@ describe("Articles Routes", () => {
       const responseBody = await res.json();
       expect(responseBody).toHaveProperty("success", false);
       expect(responseBody).toHaveProperty("error");
+      expect(responseBody).toHaveProperty(
+        "error.code",
+        ErrorCode.ARTICLE_EXISTS,
+      );
     });
 
     it("should validate required fields", async () => {
@@ -325,6 +334,75 @@ describe("Articles Routes", () => {
         const responseBody = await res.json();
         expect(responseBody).toHaveProperty("success", false);
       }
+    });
+  });
+
+  describe("CMS Error Codes", () => {
+    it("should return ARTICLE_NOT_FOUND error code for missing articles", async () => {
+      const res = await app.request(
+        `/sites/${testSiteId}/articles/en/missing-article`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${testApiKey}`,
+          },
+        },
+      );
+
+      expect(res.status).toBe(404);
+      const responseBody = await res.json();
+      expect(responseBody).toHaveProperty("success", false);
+      expect(responseBody).toHaveProperty("error");
+      expect(responseBody).toHaveProperty(
+        "error.code",
+        ErrorCode.ARTICLE_NOT_FOUND,
+      );
+    });
+
+    it("should return ARTICLE_EXISTS error code for duplicate slugs", async () => {
+      // First, create an article
+      const existingArticle = {
+        language: Language.EN,
+        slug: "duplicate-test",
+        title: "Existing Article",
+        excerpt: "Test excerpt",
+        date: "2025-09-06",
+        status: ArticleStatus.PUBLISHED,
+        content: "Test content",
+      };
+
+      await app.request(`/sites/${testSiteId}/articles`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${testApiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(existingArticle),
+      });
+
+      // Try to create another article with the same slug
+      const duplicateArticle = {
+        ...existingArticle,
+        title: "Duplicate Article",
+      };
+
+      const res = await app.request(`/sites/${testSiteId}/articles`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${testApiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(duplicateArticle),
+      });
+
+      expect(res.status).toBe(409);
+      const responseBody = await res.json();
+      expect(responseBody).toHaveProperty("success", false);
+      expect(responseBody).toHaveProperty("error");
+      expect(responseBody).toHaveProperty(
+        "error.code",
+        ErrorCode.ARTICLE_EXISTS,
+      );
     });
   });
 });
