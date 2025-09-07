@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import auth from "./routes/auth";
+import articles from "./routes/articles";
 import { errorHandler } from "./error";
 import { CFBindings, MiddlewareVars } from "./types/context";
 
@@ -9,6 +9,7 @@ const app = new Hono<{ Bindings: CFBindings; Variables: MiddlewareVars }>();
 app.onError(errorHandler);
 
 // Mount routes
-app.basePath("/api").route("/", auth);
+// app.basePath("/api").route("/", auth);
+app.basePath("/api").route("/", articles);
 
 export default app;

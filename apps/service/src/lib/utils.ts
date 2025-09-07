@@ -15,12 +15,12 @@ export function createSuccessResponse<T>(data: T): SuccessResponse<T> {
 
 /**
  * 创建一个失败的响应体
- * @param message - 错误信息
  * @param code - 业务错误码
+ * @param message - 错误信息
  */
 export function createErrorResponse(
+  code: string,
   message: string,
-  code?: string,
 ): ErrorResponse {
   return {
     success: false,

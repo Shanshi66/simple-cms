@@ -1,3 +1,4 @@
+import { ArticleStatus, Language } from "@/types/validation";
 import {
   sqliteTable,
   text,
@@ -40,12 +41,18 @@ export const articlesMetadata = sqliteTable(
     siteId: text("site_id")
       .notNull()
       .references(() => sites.id),
-    language: text("language").notNull(),
+    language: text("language", {
+      enum: [Language.EN, Language.ZH_CN],
+    }).notNull(),
     slug: text("slug").notNull(),
     title: text("title").notNull(),
     excerpt: text("excerpt").notNull(),
     date: text("date").notNull(),
-    status: text("status").notNull().default("draft"),
+    status: text("status", {
+      enum: [ArticleStatus.DRAFT, ArticleStatus.PUBLISHED],
+    })
+      .notNull()
+      .default(ArticleStatus.DRAFT),
     createdAt: integer("created_at", { mode: "timestamp" })
       .$defaultFn(() => new Date())
       .notNull(),

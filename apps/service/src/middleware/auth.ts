@@ -67,7 +67,6 @@ export function apiAuth(): MiddlewareHandler<{
         message: "API key has expired",
       });
     }
-
     // Store the site ID in context for route handlers
     c.set("siteId", matchedApiKey.siteId);
 
