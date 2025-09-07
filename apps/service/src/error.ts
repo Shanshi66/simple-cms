@@ -33,6 +33,19 @@ const errors: Record<ErrorCode, ErrorDetail> = {
   },
   [ErrorCode.DATABASE]: { message: "Database operation failed", status: 500 },
   [ErrorCode.INTERNAL]: { message: "Internal server error", status: 500 },
+  // CMS-specific error mappings
+  [ErrorCode.ARTICLE_NOT_FOUND]: {
+    message: "Article not found",
+    status: 404,
+  },
+  [ErrorCode.ARTICLE_EXISTS]: {
+    message: "An article with this slug already exists",
+    status: 409,
+  },
+  [ErrorCode.SITE_NOT_FOUND]: {
+    message: "Site not found",
+    status: 404,
+  },
 };
 
 export class CustomHttpException extends HTTPException {
