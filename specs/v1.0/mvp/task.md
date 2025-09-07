@@ -58,11 +58,11 @@
 
 **Task**
 
-- [ ] 基于现有错误处理架构，扩展支持CMS相关的业务错误和验证
-  - [ ] 4.1 在@repo/types/error中添加CMS相关错误码（文章不存在、权限不足、格式错误等）
-  - [ ] 4.2 为文章API创建Zod验证模式，集成@hono/zod-validator
-  - [ ] 4.3 确保现有src/error.ts和createErrorResponse支持新的CMS错误场景
-  - [ ] 4.4 编写CMS错误处理和验证的单元测试
+- [x] 基于现有错误处理架构，扩展支持CMS相关的业务错误和验证
+  - [x] 4.1 在@repo/types/error中添加CMS相关错误码（文章不存在、权限不足、格式错误等）
+  - [x] 4.2 为文章API创建Zod验证模式，集成@hono/zod-validator
+  - [x] 4.3 确保现有src/error.ts和createErrorResponse支持新的CMS错误场景
+  - [x] 4.4 编写CMS错误处理和验证的单元测试
 
 **Files**
 
