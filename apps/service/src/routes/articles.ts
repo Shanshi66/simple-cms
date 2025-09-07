@@ -150,7 +150,7 @@ router.get(
       .get();
 
     if (!articleMeta) {
-      throw new CustomHttpException(ErrorCode.RESOURCE_NOT_FOUND, {
+      throw new CustomHttpException(ErrorCode.ARTICLE_NOT_FOUND, {
         message: "Article not found",
       });
     }
@@ -208,7 +208,7 @@ router.post(
       .get();
 
     if (existingArticle) {
-      throw new CustomHttpException(ErrorCode.DUPLICATE_SLUG, {
+      throw new CustomHttpException(ErrorCode.ARTICLE_EXISTS, {
         message: "An article with this slug already exists for this language",
       });
     }
