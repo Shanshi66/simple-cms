@@ -24,12 +24,12 @@
 
 **Task**
 
-- [ ] Initialize blog library project structure
-  - [ ] 2.1 Update blog library package.json configuration
-  - [ ] 2.2 Create TypeScript configuration file
-  - [ ] 2.3 Create environment variable example file
-  - [ ] 2.4 Create project directory structure
-  - [ ] 2.5 Create frontend-specific type definition file
+- [x] Initialize blog library project structure
+  - [x] 2.1 Update blog library package.json configuration
+  - [x] 2.2 Create TypeScript configuration file
+  - [x] 2.3 Create environment variable example file
+  - [x] 2.4 Create project directory structure
+  - [x] 2.5 Create frontend-specific type definition file
 
 **Files**
 
