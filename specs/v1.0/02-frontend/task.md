@@ -4,12 +4,12 @@
 
 **Task**
 
-- [ ] Refactor shared types to @repo/types package
-  - [ ] 1.1 Create CMS-related shared type definitions file
-  - [ ] 1.2 Create validation-related shared type definitions file
-  - [ ] 1.3 Update @repo/types package export file
-  - [ ] 1.4 Update service code to use shared types
-  - [ ] 1.5 Add unit tests for new shared types
+- [x] Refactor shared types to @repo/types package
+  - [x] 1.1 Create CMS-related shared type definitions file
+  - [x] 1.2 Create validation-related shared type definitions file
+  - [x] 1.3 Update @repo/types package export file
+  - [x] 1.4 Update service code to use shared types
+  - [x] 1.5 Add unit tests for new shared types
 
 **Files**
 
