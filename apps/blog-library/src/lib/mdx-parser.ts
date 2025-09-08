@@ -1,9 +1,9 @@
 import { readFile } from "fs-extra";
 import matter from "gray-matter";
 import { compile } from "@mdx-js/mdx";
-import { z } from "zod";
-import { ArticleMetadataInput, ArticleMetadataSchema } from "@repo/types/cms";
+import { ArticleMetadataInput } from "@repo/types/cms";
 import { ParseResult } from "@/types/article";
+import { Validator, ValidationError } from "./validator";
 
 export class MDXParser {
   /**
@@ -37,23 +37,7 @@ export class MDXParser {
   validateMetadata(
     metadata: unknown,
   ): asserts metadata is ArticleMetadataInput {
-    try {
-      ArticleMetadataSchema.parse(metadata);
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        const issues = error.issues.map(
-          (issue) => `${issue.path.join(".")}: ${issue.message}`,
-        );
-        throw new ValidationError(
-          `Metadata validation failed: ${issues.join(", ")}`,
-          {
-            code: "METADATA_VALIDATION_ERROR",
-            field: "metadata",
-          },
-        );
-      }
-      throw error;
-    }
+    Validator.validateArticleMetadata(metadata);
   }
 
   /**
@@ -73,18 +57,5 @@ export class MDXParser {
         field: "content",
       });
     }
-  }
-}
-
-// Create custom ValidationError class if not properly extended
-class ValidationError extends Error {
-  public field?: string;
-  public code: string;
-
-  constructor(message: string, options: { code: string; field?: string }) {
-    super(message);
-    this.name = "ValidationError";
-    this.code = options.code;
-    this.field = options.field;
   }
 }
