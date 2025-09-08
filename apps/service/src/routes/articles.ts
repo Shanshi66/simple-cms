@@ -13,8 +13,8 @@ import {
   articleDetailParamsSchema,
   articleSiteParamSchema,
   createArticleSchema,
-  ArticleStatus,
 } from "@/types/validation";
+import { ArticleStatus } from "@repo/types/cms";
 import {
   ArticleListResponse,
   ArticleDetail,

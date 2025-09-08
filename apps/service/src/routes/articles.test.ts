@@ -4,7 +4,7 @@ import articles from "./articles";
 import { generateApiKey, hashApiKey } from "@/lib/crypto";
 import { errorHandler } from "@/error";
 import { CFBindings, MiddlewareVars } from "@/types/context";
-import { ArticleStatus, Language } from "@/types/validation";
+import { ArticleStatus, Language } from "@repo/types/cms";
 import { env } from "cloudflare:test";
 import { createDb } from "@/db";
 import {

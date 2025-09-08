@@ -1,4 +1,4 @@
-import { ArticleStatus, Language } from "@/types/validation";
+import { ArticleStatus, Language } from "@repo/types/cms";
 import {
   sqliteTable,
   text,
