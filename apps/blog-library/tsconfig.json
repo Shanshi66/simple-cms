@@ -1,13 +1,11 @@
 {
-  "extends": "../../packages/tsconfig/base.json",
+  "extends": "@repo/tsconfig/base.json",
   "compilerOptions": {
-    "outDir": "./dist",
-    "rootDir": ".",
-    "noEmit": false,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
-  "include": ["src/**/*", "scripts/**/*"],
+  "include": ["src/**/*", "scripts/**/*", "vitest.config.ts"],
   "exclude": ["node_modules", "dist"]
 }

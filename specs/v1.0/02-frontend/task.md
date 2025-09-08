@@ -44,13 +44,13 @@
 
 **Task**
 
-- [ ] Implement MDX parser
-  - [ ] 3.1 Implement MDX file parsing functionality
-  - [ ] 3.2 Implement front matter metadata extraction
-  - [ ] 3.3 Implement MDX format validation
-  - [ ] 3.4 Implement metadata field validation
-  - [ ] 3.5 Add error handling and detailed error messages
-  - [ ] 3.6 Write comprehensive unit tests for MDX parser
+- [x] Implement MDX parser
+  - [x] 3.1 Implement MDX file parsing functionality
+  - [x] 3.2 Implement front matter metadata extraction
+  - [x] 3.3 Implement MDX format validation
+  - [x] 3.4 Implement metadata field validation
+  - [x] 3.5 Add error handling and detailed error messages
+  - [x] 3.6 Write comprehensive unit tests for MDX parser
 
 **Files**
 
