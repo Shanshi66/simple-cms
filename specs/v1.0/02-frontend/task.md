@@ -78,13 +78,13 @@
 
 **Task**
 
-- [ ] Implement API client
-  - [ ] 5.1 Implement HTTP client basic functionality
-  - [ ] 5.2 Implement authentication header handling
-  - [ ] 5.3 Implement article creation API calls
-  - [ ] 5.4 Implement API error handling and retry mechanism
-  - [ ] 5.5 Implement response data parsing and validation
-  - [ ] 5.6 Write comprehensive unit tests for API client
+- [x] Implement API client
+  - [x] 5.1 Implement HTTP client basic functionality
+  - [x] 5.2 Implement authentication header handling
+  - [x] 5.3 Implement article creation API calls
+  - [x] 5.4 Implement API error handling and retry mechanism
+  - [x] 5.5 Implement response data parsing and validation
+  - [x] 5.6 Write comprehensive unit tests for API client
 
 **Files**
 
