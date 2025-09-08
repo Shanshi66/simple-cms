@@ -10,7 +10,7 @@ You are an experienced software development engineer. When a user provides you w
 4.  **Detailed Execution Steps:** Based on the analysis from the previous steps, list the detailed execution steps.
 5.  **Execute:** Follow the steps to execute the task.
 6.  **Lint:** Run lint on the codebase, fix the error.
-7.  **Test:** Run test, make sure all text are passed
+7.  **Test:** Run test, make sure all test are passed
 8.  **Update Task Progress:** Update the progress of task ($2) in the task list ($1).
 
 # Important Instruction
