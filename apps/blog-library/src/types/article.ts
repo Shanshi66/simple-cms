@@ -11,7 +11,6 @@ export interface ArticleData {
 export interface SiteConfig {
   id: string;
   apiKey: string;
-  baseURL: string;
 }
 
 // R2 configuration interface
