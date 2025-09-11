@@ -8,6 +8,7 @@
     "CLIENT_URL": "http://localhost:5173",
     "BASE_URL": "http://localhost:3000",
     "NODE_ENV": "development",
+    "R2_PUBLIC_DOMAIN": "your-r2-public-domain.com",
   },
   "env": {
     "production": {
@@ -15,6 +16,7 @@
         "CLIENT_URL": "https://your-production-client-url.com",
         "BASE_URL": "https://your-production-base-url.com",
         "NODE_ENV": "production",
+        "R2_PUBLIC_DOMAIN": "your-production-r2-domain.com",
       },
     },
   },
