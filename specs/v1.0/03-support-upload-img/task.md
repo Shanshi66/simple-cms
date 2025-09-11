@@ -60,10 +60,10 @@
 
 **Task**
 
-- [ ] 配置Cloudflare Workers环境变量、R2存储桶绑定和相关部署设置，确保图片上传功能可在生产环境运行
-  - [ ] 4.1 在 `apps/service/wrangler.toml` 中添加R2存储桶绑定配置
-  - [ ] 4.2 在 `apps/blog-library/.env.example` 中添加CLI工具所需的环境变量示例
-  - [ ] 4.3 更新项目根目录 `README.md` 文档，说明新增的环境变量配置要求和使用流程
+- [x] 配置Cloudflare Workers环境变量、R2存储桶绑定和相关部署设置，确保图片上传功能可在生产环境运行
+  - [x] 4.1 在 `apps/service/wrangler.toml` 中添加R2存储桶绑定配置
+  - [x] 4.2 在 `apps/blog-library/.env.example` 中添加CLI工具所需的环境变量示例
+  - [x] 4.3 更新项目根目录 `README.md` 文档，说明新增的环境变量配置要求和使用流程
 
 **Files**
 

@@ -223,6 +223,128 @@ pnpm deploy
 
 部署前需要配置相应的环境变量，具体请查看各子项目的 README 文档。
 
+## 🖼️ 图片上传功能
+
+### 功能概述
+
+系统提供了完整的图片上传功能，支持将本地图片自动上传到 Cloudflare R2 对象存储，并在博客内容中替换为在线图片链接。
+
+### 环境变量配置
+
+#### 后端服务 (apps/service)
+
+在 `apps/service/wrangler.jsonc` 中配置以下环境变量：
+
+```json
+{
+  "vars": {
+    "ADMIN_API_KEY": "your-admin-api-key",
+    "R2_PUBLIC_DOMAIN": "your-r2-public-domain.com"
+  }
+}
+```
+
+同时需要在 Cloudflare Workers 控制台中设置对应的生产环境变量。
+
+#### CLI 工具 (apps/blog-library)
+
+复制 `apps/blog-library/.env.example` 为 `.env` 并配置：
+
+```bash
+# CMS API 配置
+CMS_BASE_URL=https://your-api-domain.com
+ADMIN_API_KEY=your-admin-api-key
+
+# Cloudflare R2 配置 (用于 CLI 工具)
+CLOUDFLARE_ACCOUNT_ID=your_account_id
+CLOUDFLARE_ACCESS_KEY_ID=your_access_key
+CLOUDFLARE_SECRET_ACCESS_KEY=your_secret_key
+CLOUDFLARE_R2_BUCKET=your_bucket_name
+CLOUDFLARE_R2_ENDPOINT=https://your-account-id.r2.cloudflarestorage.com
+
+# 站点 API 密钥
+SITE1_API_KEY=your_site1_api_key
+```
+
+### 使用流程
+
+#### 1. 编写博客内容
+
+在 MDX 文件中正常使用本地图片路径：
+
+```markdown
+# 我的博客标题
+
+![本地图片](./images/screenshot.png)
+
+这里是博客内容...
+
+![另一张图片](../assets/diagram.jpg)
+```
+
+#### 2. 上传图片到 R2
+
+```bash
+cd apps/blog-library
+pnpm run imgUpload site1/zh-CN/my-blog-post.mdx
+```
+
+此命令会：
+
+- 解析 MDX 文件中的本地图片引用
+- 将本地图片上传到 Cloudflare R2
+- 自动替换文件中的图片路径为 R2 URL
+
+#### 3. 上传博客内容
+
+```bash
+cd apps/blog-library
+pnpm run blogUpload site1/zh-CN/my-blog-post.mdx
+```
+
+**注意**：如果步骤 2 未执行，博客上传会失败并提示先处理本地图片。
+
+### API 接口说明
+
+#### 图片上传接口
+
+- **URL**: `POST /image/upload`
+- **认证**: Bearer Token (ADMIN_API_KEY)
+- **Content-Type**: `multipart/form-data`
+
+**请求参数**：
+
+- `image`: 图片文件 (支持 jpg/jpeg/png/gif/webp)
+- `siteId`: 站点ID
+- `postSlug`: 文章slug
+
+**响应示例**：
+
+```json
+{
+  "success": true,
+  "data": {
+    "url": "https://r2-domain.com/site1/my-post/uuid.jpg",
+    "path": "site1/my-post/uuid.jpg",
+    "size": 102400,
+    "contentType": "image/jpeg"
+  }
+}
+```
+
+### 命令说明
+
+#### `pnpm run imgUpload <filepath>`
+
+- **作用**: 上传指定 MDX 文件中的本地图片到 R2
+- **示例**: `pnpm run imgUpload site1/zh-CN/first-blog.mdx`
+
+#### `pnpm run blogUpload <filepath>`
+
+- **作用**: 上传博客内容到 CMS
+- **前置条件**: 必须先运行 `imgUpload` 处理本地图片
+- **示例**: `pnpm run blogUpload site1/zh-CN/first-blog.mdx`
+
 ## 📚 学习资源
 
 ### 推荐阅读
