@@ -2,12 +2,15 @@ import { Context } from "hono";
 
 export interface CFBindings {
   DB: D1Database;
+  R2_BUCKET: R2Bucket;
   BETTER_AUTH_SECRET: string;
   BASE_URL: string;
   CLIENT_URL: string;
   GOOGLE_CLIENT_ID: string;
   GOOGLE_CLIENT_SECRET: string;
   NODE_ENV: "development" | "production";
+  ADMIN_API_KEY: string;
+  R2_PUBLIC_DOMAIN: string;
 }
 
 export interface MiddlewareVars {

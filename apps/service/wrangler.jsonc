@@ -24,12 +24,6 @@
   //     "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
   //   }
   // ],
-  // "r2_buckets": [
-  //   {
-  //     "binding": "MY_BUCKET",
-  //     "bucket_name": "my-bucket"
-  //   }
-  // ],
   "d1_databases": [
     {
       "binding": "DB",
@@ -46,4 +40,10 @@
     "port": 3000,
     "local_protocol": "http",
   },
+  "r2_buckets": [
+    {
+      "bucket_name": "website-resource",
+      "binding": "R2_BUCKET",
+    },
+  ],
 }

@@ -46,6 +46,27 @@ const errors: Record<ErrorCode, ErrorDetail> = {
     message: "Site not found",
     status: 404,
   },
+  // Image upload error mappings
+  [ErrorCode.INVALID_ADMIN_KEY]: {
+    message: "Invalid or missing admin API key",
+    status: 401,
+  },
+  [ErrorCode.INVALID_FILE_TYPE]: {
+    message: "Unsupported file type. Allowed types: jpg, jpeg, png, gif, webp",
+    status: 400,
+  },
+  [ErrorCode.FILE_TOO_LARGE]: {
+    message: "File size exceeds 5MB limit",
+    status: 413,
+  },
+  [ErrorCode.UPLOAD_FAILED]: {
+    message: "Failed to upload file to storage",
+    status: 500,
+  },
+  [ErrorCode.MISSING_FILE]: {
+    message: "No file provided in the request",
+    status: 400,
+  },
 };
 
 export class CustomHttpException extends HTTPException {

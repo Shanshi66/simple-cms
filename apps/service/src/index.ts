@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import articles from "./routes/articles";
+import image from "./routes/image";
 import { errorHandler } from "./error";
 import { CFBindings, MiddlewareVars } from "./types/context";
 
@@ -11,5 +12,6 @@ app.onError(errorHandler);
 // Mount routes
 // app.basePath("/api").route("/", auth);
 app.basePath("/api").route("/", articles);
+app.basePath("/api").route("/", image);
 
 export default app;

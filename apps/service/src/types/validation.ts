@@ -59,7 +59,14 @@ export const createArticleSchema = z.object({
   content: z.string().min(1, "Content is required"),
 });
 
+// Form data validation for image upload endpoint
+export const imageUploadFormSchema = z.object({
+  siteId: z.string().min(1, "Site ID is required"),
+  postSlug: z.string().min(1, "Post slug is required"),
+});
+
 export type ArticleListQuery = z.infer<typeof articleListQuerySchema>;
 export type ArticleDetailParams = z.infer<typeof articleDetailParamsSchema>;
 export type ArticleSiteParam = z.infer<typeof articleSiteParamSchema>;
 export type CreateArticleBody = z.infer<typeof createArticleSchema>;
+export type ImageUploadForm = z.infer<typeof imageUploadFormSchema>;
