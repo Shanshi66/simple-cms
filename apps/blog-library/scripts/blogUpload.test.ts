@@ -130,28 +130,28 @@ describe("BlogUploader", () => {
 
   describe("loadSiteConfig", () => {
     it("should load site configuration from environment", () => {
-      process.env.SITE1_API_KEY = "test-api-key";
+      process.env.ADMIN_API_KEY = "test-admin-key";
 
       const config = uploader.testLoadSiteConfig("site1");
 
       expect(config.id).toBe("site1");
-      expect(config.apiKey).toBe("test-api-key");
+      expect(config.apiKey).toBe("test-admin-key");
     });
 
     it("should handle different case site IDs", () => {
-      process.env.MYSITE_API_KEY = "my-api-key";
+      process.env.ADMIN_API_KEY = "admin-key";
 
       const config = uploader.testLoadSiteConfig("mysite");
 
       expect(config.id).toBe("mysite");
-      expect(config.apiKey).toBe("my-api-key");
+      expect(config.apiKey).toBe("admin-key");
     });
 
     it("should throw error for missing API key", () => {
-      delete process.env.SITE1_API_KEY;
+      delete process.env.ADMIN_API_KEY;
 
       expect(() => uploader.testLoadSiteConfig("site1")).toThrow(
-        'Missing API key for site "site1". Please set SITE1_API_KEY in your .env file',
+        "Missing admin API key. Please set ADMIN_API_KEY in your .env file",
       );
     });
   });
@@ -253,7 +253,7 @@ Local image: ![Local](./local.png)
 
   describe("upload", () => {
     beforeEach(() => {
-      process.env.SITE1_API_KEY = "test-api-key";
+      process.env.ADMIN_API_KEY = "test-admin-key";
       process.env.CMS_BASE_URL = "https://api.cms.com";
 
       vi.mocked(existsSync).mockReturnValue(true);
@@ -336,10 +336,10 @@ Local image: ![Local](./local.png)
     });
 
     it("should handle missing API key", async () => {
-      delete process.env.SITE1_API_KEY;
+      delete process.env.ADMIN_API_KEY;
 
       await expect(uploader.upload("site1/zh-CN/test.mdx")).rejects.toThrow(
-        'Missing API key for site "site1"',
+        "Missing admin API key",
       );
     });
 

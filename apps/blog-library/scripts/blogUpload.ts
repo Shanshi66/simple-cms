@@ -24,12 +24,11 @@ export class BlogUploader {
    * Load site configuration from environment variables
    */
   private loadSiteConfig(siteId: string): SiteConfig {
-    const apiKeyEnv = `${siteId.toUpperCase()}_API_KEY`;
-    const apiKey = process.env[apiKeyEnv];
+    const apiKey = process.env.ADMIN_API_KEY;
 
     if (!apiKey) {
       throw new Error(
-        `Missing API key for site "${siteId}". Please set ${apiKeyEnv} in your .env file`,
+        `Missing admin API key. Please set ADMIN_API_KEY in your .env file`,
       );
     }
 
@@ -161,7 +160,9 @@ export class BlogUploader {
       // Provide specific guidance for common errors
       if (error.message.includes("API request failed")) {
         console.error(`\n💡 Troubleshooting tips:`);
-        console.error(`   - Check your API key and base URL in .env file`);
+        console.error(
+          `   - Check your ADMIN_API_KEY and base URL in .env file`,
+        );
         console.error(`   - Verify the site ID exists in the backend`);
         console.error(
           `   - Ensure the article slug is unique for this site and language`,
@@ -172,7 +173,7 @@ export class BlogUploader {
         console.error(`   - Ensure the file exists in the content directory`);
         console.error(`   - File should be relative to the content/ directory`);
       } else if (
-        error.message.includes("Missing API key") ||
+        error.message.includes("Missing admin API key") ||
         error.message.includes("Missing CMS base URL")
       ) {
         console.error(`\n💡 Troubleshooting tips:`);
@@ -180,7 +181,7 @@ export class BlogUploader {
           `   - Copy .env.example to .env and fill in your configuration`,
         );
         console.error(`   - Environment variable names are case-sensitive`);
-        console.error(`   - Site ID should match the folder name in content/`);
+        console.error(`   - Set ADMIN_API_KEY for admin authentication`);
         console.error(
           `   - Make sure to set CMS_BASE_URL for the shared API endpoint`,
         );
