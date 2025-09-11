@@ -27,12 +27,12 @@
 
 **Task**
 
-- [ ] 实现CLI图片上传脚本 (`imgUpload.ts`)，用于解析MDX文件、提取本地图片、批量上传到R2并替换路径，包含完整的单元测试
-  - [ ] 2.1 实现图片上传核心逻辑类 `apps/blog-library/src/lib/image-uploader.ts`
-  - [ ] 2.2 为图片上传核心逻辑编写单元测试 `apps/blog-library/src/lib/image-uploader.test.ts`
-  - [ ] 2.3 实现CLI入口脚本 `apps/blog-library/scripts/imgUpload.ts`
-  - [ ] 2.4 为CLI脚本编写单元测试 `apps/blog-library/scripts/imgUpload.test.ts`
-  - [ ] 2.5 在 `apps/blog-library/package.json` 中添加imgUpload脚本命令
+- [x] 实现CLI图片上传脚本 (`imgUpload.ts`)，用于解析MDX文件、提取本地图片、批量上传到R2并替换路径，包含完整的单元测试
+  - [x] 2.1 实现图片上传核心逻辑类 `apps/blog-library/src/lib/image-uploader.ts`
+  - [x] 2.2 为图片上传核心逻辑编写单元测试 `apps/blog-library/src/lib/image-uploader.test.ts`
+  - [x] 2.3 实现CLI入口脚本 `apps/blog-library/scripts/imgUpload.ts`
+  - [x] 2.4 为CLI脚本编写单元测试 `apps/blog-library/scripts/imgUpload.test.ts`
+  - [x] 2.5 在 `apps/blog-library/package.json` 中添加imgUpload脚本命令
 
 **Files**
 
