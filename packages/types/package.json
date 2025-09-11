@@ -26,6 +26,7 @@
     "./api": "./src/api.ts",
     "./errors": "./src/errors.ts",
     "./auth": "./src/auth.ts",
+    "./image": "./src/image.ts",
     "./i18n": "./src/i18n/index.ts",
     "./ui": "./src/ui/index.ts"
   },

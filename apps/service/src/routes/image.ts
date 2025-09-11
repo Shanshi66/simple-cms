@@ -1,29 +1,25 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import { ErrorCode } from "@repo/types/errors";
+import {
+  ImageUploadFormSchema,
+  SUPPORTED_IMAGE_TYPES,
+  MAX_IMAGE_FILE_SIZE,
+  ImageContentType,
+} from "@repo/types/image";
+import { ImageUploadSuccessData } from "@repo/types/api";
 import { CustomHttpException } from "@/error";
 import { createSuccessResponse } from "@/lib/utils";
 import { adminAuth } from "@/middleware/admin-auth";
 import { CFBindings, MiddlewareVars } from "@/types/context";
-import { imageUploadFormSchema } from "@/types/validation";
 
 const router = new Hono<{ Bindings: CFBindings; Variables: MiddlewareVars }>();
 
 // Apply admin authentication middleware to all routes
 router.use("*", adminAuth());
 
-// Supported image file types
-const SUPPORTED_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/gif",
-  "image/webp",
-];
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB in bytes
-
 // Helper function to get file extension from content type
-function getFileExtension(contentType: string): string {
+function getFileExtension(contentType: ImageContentType): string {
   switch (contentType) {
     case "image/jpeg":
     case "image/jpg":
@@ -41,7 +37,7 @@ function getFileExtension(contentType: string): string {
 
 // Helper function to validate file type
 function validateFileType(contentType: string): void {
-  if (!SUPPORTED_TYPES.includes(contentType)) {
+  if (!SUPPORTED_IMAGE_TYPES.includes(contentType as ImageContentType)) {
     throw new CustomHttpException(ErrorCode.INVALID_FILE_TYPE, {
       message: `Unsupported file type: ${contentType}. Allowed types: jpg, jpeg, png, gif, webp`,
     });
@@ -50,7 +46,7 @@ function validateFileType(contentType: string): void {
 
 // Helper function to validate file size
 function validateFileSize(size: number): void {
-  if (size > MAX_FILE_SIZE) {
+  if (size > MAX_IMAGE_FILE_SIZE) {
     throw new CustomHttpException(ErrorCode.FILE_TOO_LARGE, {
       message: `File size (${Math.round(size / 1024)}KB) exceeds 5MB limit`,
     });
@@ -60,15 +56,15 @@ function validateFileSize(size: number): void {
 // POST /image/upload - Upload image to R2 storage
 router.post(
   "/image/upload",
-  zValidator("form", imageUploadFormSchema),
-  async (c) => {
+  zValidator("form", ImageUploadFormSchema),
+  async (c): Promise<Response> => {
     const { siteId, postSlug } = c.req.valid("form");
 
     // Get the uploaded file from form data
     const body = await c.req.parseBody();
-    const imageFile = body.image as File;
+    const imageFile = body.image;
 
-    if (!imageFile) {
+    if (!(imageFile instanceof File)) {
       throw new CustomHttpException(ErrorCode.MISSING_FILE, {
         message: "No image file provided in the request",
       });
@@ -81,7 +77,7 @@ router.post(
     validateFileSize(imageFile.size);
 
     // Generate unique filename with path structure
-    const fileExtension = getFileExtension(imageFile.type);
+    const fileExtension = getFileExtension(imageFile.type as ImageContentType);
     const fileName = `${crypto.randomUUID()}.${fileExtension}`;
     const filePath = `${siteId}/${postSlug}/${fileName}`;
 
@@ -100,7 +96,7 @@ router.post(
       const imageUrl = `https://${c.env.R2_PUBLIC_DOMAIN}/${filePath}`;
 
       // Return success response with image details
-      const response = {
+      const response: ImageUploadSuccessData = {
         url: imageUrl,
       };
 
