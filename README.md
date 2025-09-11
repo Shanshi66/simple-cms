@@ -255,15 +255,6 @@ pnpm deploy
 CMS_BASE_URL=https://your-api-domain.com
 ADMIN_API_KEY=your-admin-api-key
 
-# Cloudflare R2 配置 (用于 CLI 工具)
-CLOUDFLARE_ACCOUNT_ID=your_account_id
-CLOUDFLARE_ACCESS_KEY_ID=your_access_key
-CLOUDFLARE_SECRET_ACCESS_KEY=your_secret_key
-CLOUDFLARE_R2_BUCKET=your_bucket_name
-CLOUDFLARE_R2_ENDPOINT=https://your-account-id.r2.cloudflarestorage.com
-
-# 站点 API 密钥
-SITE1_API_KEY=your_site1_api_key
 ```
 
 ### 使用流程
