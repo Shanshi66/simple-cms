@@ -46,10 +46,10 @@
 
 **Task**
 
-- [ ] 在现有 `blogUpload.ts` 中添加本地图片检验功能，确保上传博客前已处理所有本地图片引用，包含单元测试
-  - [ ] 3.1 在 `apps/blog-library/scripts/blogUpload.ts` 中添加本地图片检验方法
-  - [ ] 3.2 在博客上传流程中集成本地图片检验逻辑
-  - [ ] 3.3 更新 `apps/blog-library/scripts/blogUpload.test.ts` 中的单元测试，验证本地图片检验功能
+- [x] 在现有 `blogUpload.ts` 中添加本地图片检验功能，确保上传博客前已处理所有本地图片引用，包含单元测试
+  - [x] 3.1 在 `apps/blog-library/scripts/blogUpload.ts` 中添加本地图片检验方法
+  - [x] 3.2 在博客上传流程中集成本地图片检验逻辑
+  - [x] 3.3 更新 `apps/blog-library/scripts/blogUpload.test.ts` 中的单元测试，验证本地图片检验功能
 
 **Files**
 

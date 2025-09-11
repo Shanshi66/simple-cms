@@ -81,6 +81,15 @@ export class BlogUploader {
       console.log(`📖 Parsing MDX file...`);
       const parseResult = await this.mdxParser.parse(pathInfo.fullPath);
 
+      // Check for local images before proceeding
+      console.log(`🔍 Checking for local image references...`);
+      const hasLocalImages = this.checkLocalImages(parseResult.content);
+      if (hasLocalImages) {
+        throw new Error(
+          `Found local images in ${filePath}. Please run 'pnpm run imgUpload ${filePath}' first to upload images to R2.`,
+        );
+      }
+
       // Use slug from metadata (required field)
       const slug = parseResult.metadata.slug;
       console.log(`🏷️  Using slug: "${slug}"`);
@@ -113,6 +122,25 @@ export class BlogUploader {
       this.handleError(error);
       throw error; // Re-throw for testing, CLI will handle process.exit
     }
+  }
+
+  /**
+   * Check if the content contains local image references
+   */
+  private checkLocalImages(content: string): boolean {
+    const imageRegex = /!\[.*?\]\(([^)]+)\)/g;
+    let match;
+
+    while ((match = imageRegex.exec(content)) !== null) {
+      const imagePath = match[1];
+      if (!imagePath) continue;
+      // Check if it's a local image path (not HTTP or protocol-relative URL)
+      if (!imagePath.startsWith("http") && !imagePath.startsWith("//")) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   /**
@@ -169,6 +197,10 @@ export class BlogUploader {
 
   public testLoadSiteConfig(siteId: string) {
     return this.loadSiteConfig(siteId);
+  }
+
+  public testCheckLocalImages(content: string): boolean {
+    return this.checkLocalImages(content);
   }
 }
 
