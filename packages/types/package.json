@@ -21,6 +21,7 @@
   },
   "exports": {
     ".": "./src/index.ts",
+    "./base": "./src/base.ts",
     "./cms": "./src/cms.ts",
     "./api": "./src/api.ts",
     "./errors": "./src/errors.ts",
@@ -31,6 +32,6 @@
   "dependencies": {
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "zod": "^3.22.0"
+    "zod": "^4.1.4"
   }
 }
