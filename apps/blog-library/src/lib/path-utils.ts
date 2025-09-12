@@ -1,5 +1,5 @@
 import path from "path";
-import { Language } from "@repo/types/cms";
+import { Language } from "@repo/types/api";
 
 export interface PathInfo {
   siteId: string;

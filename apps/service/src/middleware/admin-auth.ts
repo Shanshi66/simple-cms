@@ -1,5 +1,5 @@
 import { MiddlewareHandler } from "hono";
-import { ErrorCode } from "@repo/types/errors";
+import { ErrorCode } from "@repo/types/error";
 import { CustomHttpException } from "@/error";
 import { CFBindings, MiddlewareVars } from "@/types/context";
 

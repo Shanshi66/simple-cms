@@ -4,7 +4,7 @@ import {
   Language,
   SLUG_REGEX,
   DATE_REGEX,
-} from "@repo/types/cms";
+} from "@repo/types/api";
 
 // Query parameters validation for article list endpoint
 export const articleListQuerySchema = z.object({

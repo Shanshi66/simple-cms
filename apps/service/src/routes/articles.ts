@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import { eq, and, desc, count } from "drizzle-orm";
-import { ErrorCode } from "@repo/types/errors";
+import { ErrorCode } from "@repo/types/error";
 import { CustomHttpException } from "@/error";
 import { createDb } from "@/db";
 import { articlesMetadata, articlesContent } from "@/db/schema/cms";
@@ -14,7 +14,7 @@ import {
   articleSiteParamSchema,
   createArticleSchema,
 } from "@/types/validation";
-import { ArticleStatus } from "@repo/types/cms";
+import { ArticleStatus } from "@repo/types/api";
 import {
   ArticleListResponse,
   ArticleDetail,

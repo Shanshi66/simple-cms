@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { Validator, ValidationError } from "./validator";
-import { ArticleStatus } from "@repo/types/cms";
+import { ArticleStatus } from "@repo/types/api";
 
 describe("Validator", () => {
   describe("validateArticleMetadata", () => {

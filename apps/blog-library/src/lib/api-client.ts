@@ -5,7 +5,7 @@ import {
   CreateArticleResponse,
   CreateArticleRequestSchema,
   CreateArticleResponseSchema,
-} from "@repo/types/cms";
+} from "@repo/types/api";
 
 export class APIClient {
   private readonly baseURL: string;

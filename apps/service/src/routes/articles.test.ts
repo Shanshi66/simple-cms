@@ -4,7 +4,7 @@ import articles from "./articles";
 import { generateApiKey, hashApiKey } from "@/lib/crypto";
 import { errorHandler } from "@/error";
 import { CFBindings, MiddlewareVars } from "@/types/context";
-import { ArticleStatus, Language } from "@repo/types/cms";
+import { ArticleStatus, Language } from "@repo/types/api";
 import { env } from "cloudflare:test";
 import { createDb } from "@/db";
 import {
@@ -13,7 +13,7 @@ import {
   articlesMetadata,
   articlesContent,
 } from "@/db/schema/cms";
-import { ErrorCode } from "@repo/types/errors";
+import { ErrorCode } from "@repo/types/error";
 
 describe("Articles Routes", () => {
   let app: Hono<{ Bindings: CFBindings; Variables: MiddlewareVars }>;

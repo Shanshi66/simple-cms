@@ -5,7 +5,7 @@ import {
   SLUG_REGEX,
   DATE_REGEX,
   ArticleStatus,
-} from "@repo/types/cms";
+} from "@repo/types/api";
 
 export class ValidationError extends Error {
   public field?: string;

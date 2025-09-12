@@ -29,7 +29,6 @@
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.11.7",
     "@react-router/dev": "^7.8.2",
-    "@repo/eslint": "workspace:*",
     "@repo/tsconfig": "workspace:*",
     "@tailwindcss/vite": "^4.1.12",
     "@types/node": "^20.19.11",

@@ -3,7 +3,7 @@ import { Hono } from "hono";
 import image from "./image";
 import { errorHandler } from "@/error";
 import { CFBindings, MiddlewareVars } from "@/types/context";
-import { ErrorCode } from "@repo/types/errors";
+import { ErrorCode } from "@repo/types/error";
 import { env } from "cloudflare:test";
 
 describe("Image Upload Routes", () => {

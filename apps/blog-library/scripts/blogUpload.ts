@@ -7,7 +7,7 @@ import { MDXParser } from "@/lib/mdx-parser";
 import { APIClient } from "@/lib/api-client";
 import { ValidationError } from "@/lib/validator";
 import { parseFilePath } from "@/lib/path-utils";
-import { CreateArticleRequest } from "@repo/types/cms";
+import { CreateArticleRequest } from "@repo/types/api";
 import { SiteConfig } from "@/types/article";
 
 // Load environment variables

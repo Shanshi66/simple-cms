@@ -3,7 +3,7 @@ import { Hono } from "hono";
 import { adminAuth } from "./admin-auth";
 import { errorHandler } from "@/error";
 import { CFBindings, MiddlewareVars } from "@/types/context";
-import { ErrorCode } from "@repo/types/errors";
+import { ErrorCode } from "@repo/types/error";
 import { env } from "cloudflare:test";
 
 describe("Admin Authentication Middleware", () => {

@@ -1,12 +1,12 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
-import { ErrorCode } from "@repo/types/errors";
+import { ErrorCode } from "@repo/types/error";
 import {
   ImageUploadFormSchema,
   SUPPORTED_IMAGE_TYPES,
   MAX_IMAGE_FILE_SIZE,
   ImageContentType,
-} from "@repo/types/image";
+} from "@repo/types/api";
 import { ImageUploadSuccessData } from "@repo/types/api";
 import { CustomHttpException } from "@/error";
 import { createSuccessResponse } from "@/lib/utils";

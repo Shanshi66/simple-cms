@@ -1,4 +1,4 @@
-import { ErrorCode } from "@repo/types/errors";
+import { ErrorCode } from "@repo/types/error";
 import { HTTPException } from "hono/http-exception";
 import type { ContentfulStatusCode, StatusCode } from "hono/utils/http-status";
 import { HonoContext } from "./types/context";

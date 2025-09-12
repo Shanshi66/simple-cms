@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { writeFile, remove, ensureDir } from "fs-extra";
 import path from "path";
 import { MDXParser } from "./mdx-parser";
-import { ArticleStatus } from "@repo/types/cms";
+import { ArticleStatus } from "@repo/types/api";
 
 describe("MDXParser", () => {
   let parser: MDXParser;

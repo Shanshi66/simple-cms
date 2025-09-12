@@ -1,4 +1,4 @@
-import { ArticleMetadataInput, Language } from "@repo/types/cms";
+import { ArticleMetadataInput, Language } from "@repo/types/api";
 
 // Frontend-specific article data structure
 export interface ArticleData {

@@ -1,6 +1,6 @@
 import { MiddlewareHandler } from "hono";
 import { eq } from "drizzle-orm";
-import { ErrorCode } from "@repo/types/errors";
+import { ErrorCode } from "@repo/types/error";
 import { CustomHttpException } from "@/error";
 import { createDb } from "@/db";
 import { apiKeys } from "@/db/schema/cms";
