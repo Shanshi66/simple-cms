@@ -34,7 +34,6 @@ Schemas that are only used in the service should be stored in `src/types`. If a 
 ### Unit tests
 
 1. Add unit tests for functions, middlewares and other. Especially for those in `lib` and `middleware`.
-2. Use mock envs and context for middleware testing. DO NOT create hono instance.
 
 ### Integration tests
 
