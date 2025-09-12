@@ -25,11 +25,21 @@ Schemas that are only used in the service should be stored in `src/types`. If a 
 
 ## How to generate and apply migration
 
-1. add and modify schema in `src/db/schema`
-2. run `pnpm run db:generate` to generate migrations
-3. run `pnpx wrangler d1 migrations apply $db` to apply migration to database, db name can be found in `wrangler.jsonc`
+1. Add and modify schema in `src/db/schema`
+2. Run `pnpm run db:generate` to generate migrations
+3. Run `pnpx wrangler d1 migrations apply $db` to apply migration to database, db name can be found in `wrangler.jsonc`
 
-## How to add test
+## How to write test
 
-1. use `@cloudflare/vitest-pool-workers` to test
-2. `import { env } from 'cloudflare:test'` to use cloudflare bindings
+### Unit tests
+
+1. Add unit tests for functions, middlewares and other. Especially for those in `lib` and `middleware`.
+2. Use mock envs and context for middleware testing. DO NOT create hono instance.
+
+### Integration tests
+
+1. Use `@cloudflare/vitest-pool-workers` library, `import { env } from 'cloudflare:test'` to use cloudflare bindings
+2. Add integration tests for each route in `routes` and set test file in `routes`.
+3. DO NOT check `message` field in test, just check `success`, `error code`, `status code`, `data` fields
+4. Import hono instance as `app` from `route` that need to test, DO NOT create hono instance.
+5. Add `env` to every request, avoid to mock env, `const res = await app.request("/sites/test-site/articles", {}, env);`
