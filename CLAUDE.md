@@ -56,7 +56,6 @@ This is a Turborepo monorepo with two main applications and shared packages:
 - `@repo/ui` - shadcn/ui component library with Tailwind CSS 4, includes theme provider and common components
 - `@repo/tsconfig` - Shared TypeScript configurations (base, react, cloudflare variants)
 - `@repo/types` - Shared TypeScript type definitions (i18n, ui types)
-- `@repo/utils` - Shared utility functions
 
 ### Key Technologies
 

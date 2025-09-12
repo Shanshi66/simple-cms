@@ -607,7 +607,6 @@ git commit -m "feat(tsconfig): update to TypeScript 5.x"
       // 引用其他包
       "@repo/ui": ["../../packages/ui/src/index"],
       "@repo/ui/*": ["../../packages/ui/src/*"],
-      "@repo/utils": ["../../packages/utils/src/index"],
       "@repo/types": ["../../packages/types/src/index"]
     }
   }
