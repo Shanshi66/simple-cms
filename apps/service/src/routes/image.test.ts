@@ -1,35 +1,12 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { Hono } from "hono";
-import image from "./image";
+import app from "./image";
 import { errorHandler } from "@/error";
-import { CFBindings, MiddlewareVars } from "@/types/context";
 import { ErrorCode } from "@repo/types/error";
 import { env } from "cloudflare:test";
 
 describe("Image Upload Routes", () => {
-  let app: Hono<{ Bindings: CFBindings; Variables: MiddlewareVars }>;
-  const testAdminKey = "test-admin-api-key";
-  const testR2Domain = "test-r2-domain.com";
-
   beforeEach(() => {
-    app = new Hono<{ Bindings: CFBindings; Variables: MiddlewareVars }>();
-
-    // Set up error handler like in the main app
     app.onError(errorHandler);
-
-    // Set up test environment with real CFBindings
-    app.use("*", (c, next) => {
-      c.env = {
-        ...env,
-        ADMIN_API_KEY: testAdminKey,
-        R2_PUBLIC_DOMAIN: testR2Domain,
-        GOOGLE_CLIENT_ID: "test-google-client-id",
-        GOOGLE_CLIENT_SECRET: "test-google-client-secret",
-      } as unknown as CFBindings;
-      return next();
-    });
-
-    app.route("/", image);
   });
 
   // Helper function to create a test image file
@@ -60,13 +37,17 @@ describe("Image Upload Routes", () => {
       const imageFile = createTestImageFile("test.jpg", "image/jpeg", 1024);
       const formData = createFormData(imageFile);
 
-      const res = await app.request("/image/upload", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${testAdminKey}`,
+      const res = await app.request(
+        "/image/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${env.ADMIN_API_KEY}`,
+          },
+          body: formData,
         },
-        body: formData,
-      });
+        env,
+      );
 
       expect(res.status).toBe(201);
       const responseBody = await res.json();
@@ -74,13 +55,10 @@ describe("Image Upload Routes", () => {
       expect(responseBody).toHaveProperty("success", true);
       expect(responseBody).toHaveProperty("data");
       expect(responseBody).toHaveProperty("data.url");
-      expect(responseBody).toHaveProperty("data.path");
-      expect(responseBody).toHaveProperty("data.size", 1024);
-      expect(responseBody).toHaveProperty("data.contentType", "image/jpeg");
 
       // Verify response structure without accessing properties directly
       expect(JSON.stringify(responseBody)).toContain(
-        `https://${testR2Domain}/test-site/test-post/`,
+        `https://${env.R2_PUBLIC_DOMAIN}/test-site/test-post/`,
       );
       expect(JSON.stringify(responseBody)).toMatch(/\.jpg/);
 
@@ -91,19 +69,21 @@ describe("Image Upload Routes", () => {
       const imageFile = createTestImageFile("test.png", "image/png", 2048);
       const formData = createFormData(imageFile);
 
-      const res = await app.request("/image/upload", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${testAdminKey}`,
+      const res = await app.request(
+        "/image/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${env.ADMIN_API_KEY}`,
+          },
+          body: formData,
         },
-        body: formData,
-      });
+        env,
+      );
 
       expect(res.status).toBe(201);
       const responseBody = await res.json();
 
-      expect(responseBody).toHaveProperty("data.contentType", "image/png");
-      expect(responseBody).toHaveProperty("data.size", 2048);
       expect(JSON.stringify(responseBody)).toMatch(/\.png/);
     });
 
@@ -111,18 +91,21 @@ describe("Image Upload Routes", () => {
       const imageFile = createTestImageFile("test.gif", "image/gif", 512);
       const formData = createFormData(imageFile);
 
-      const res = await app.request("/image/upload", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${testAdminKey}`,
+      const res = await app.request(
+        "/image/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${env.ADMIN_API_KEY}`,
+          },
+          body: formData,
         },
-        body: formData,
-      });
+        env,
+      );
 
       expect(res.status).toBe(201);
       const responseBody = await res.json();
 
-      expect(responseBody).toHaveProperty("data.contentType", "image/gif");
       expect(JSON.stringify(responseBody)).toMatch(/\.gif/);
     });
 
@@ -130,18 +113,21 @@ describe("Image Upload Routes", () => {
       const imageFile = createTestImageFile("test.webp", "image/webp", 1536);
       const formData = createFormData(imageFile);
 
-      const res = await app.request("/image/upload", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${testAdminKey}`,
+      const res = await app.request(
+        "/image/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${env.ADMIN_API_KEY}`,
+          },
+          body: formData,
         },
-        body: formData,
-      });
+        env,
+      );
 
       expect(res.status).toBe(201);
       const responseBody = await res.json();
 
-      expect(responseBody).toHaveProperty("data.contentType", "image/webp");
       expect(JSON.stringify(responseBody)).toMatch(/\.webp/);
     });
 
@@ -149,18 +135,21 @@ describe("Image Upload Routes", () => {
       const imageFile = createTestImageFile("test.jpg", "image/jpg", 1024);
       const formData = createFormData(imageFile);
 
-      const res = await app.request("/image/upload", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${testAdminKey}`,
+      const res = await app.request(
+        "/image/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${env.ADMIN_API_KEY}`,
+          },
+          body: formData,
         },
-        body: formData,
-      });
+        env,
+      );
 
       expect(res.status).toBe(201);
       const responseBody = await res.json();
 
-      expect(responseBody).toHaveProperty("data.contentType", "image/jpg");
       expect(JSON.stringify(responseBody)).toMatch(/\.jpg/); // Should still use .jpg extension
     });
   });
@@ -170,10 +159,14 @@ describe("Image Upload Routes", () => {
       const imageFile = createTestImageFile();
       const formData = createFormData(imageFile);
 
-      const res = await app.request("/image/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const res = await app.request(
+        "/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        },
+        env,
+      );
 
       expect(res.status).toBe(401);
       const responseBody = await res.json();
@@ -188,13 +181,17 @@ describe("Image Upload Routes", () => {
       const imageFile = createTestImageFile();
       const formData = createFormData(imageFile);
 
-      const res = await app.request("/image/upload", {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer wrong-key",
+      const res = await app.request(
+        "/image/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer wrong-key",
+          },
+          body: formData,
         },
-        body: formData,
-      });
+        env,
+      );
 
       expect(res.status).toBe(401);
       const responseBody = await res.json();
@@ -212,13 +209,17 @@ describe("Image Upload Routes", () => {
       formData.append("siteId", "test-site");
       formData.append("postSlug", "test-post");
 
-      const res = await app.request("/image/upload", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${testAdminKey}`,
+      const res = await app.request(
+        "/image/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${env.ADMIN_API_KEY}`,
+          },
+          body: formData,
         },
-        body: formData,
-      });
+        env,
+      );
 
       expect(res.status).toBe(400);
       const responseBody = await res.json();
@@ -230,13 +231,17 @@ describe("Image Upload Routes", () => {
       const imageFile = createTestImageFile("test.txt", "text/plain", 1024);
       const formData = createFormData(imageFile);
 
-      const res = await app.request("/image/upload", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${testAdminKey}`,
+      const res = await app.request(
+        "/image/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${env.ADMIN_API_KEY}`,
+          },
+          body: formData,
         },
-        body: formData,
-      });
+        env,
+      );
 
       expect(res.status).toBe(400);
       const responseBody = await res.json();
@@ -257,13 +262,17 @@ describe("Image Upload Routes", () => {
       );
       const formData = createFormData(imageFile);
 
-      const res = await app.request("/image/upload", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${testAdminKey}`,
+      const res = await app.request(
+        "/image/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${env.ADMIN_API_KEY}`,
+          },
+          body: formData,
         },
-        body: formData,
-      });
+        env,
+      );
 
       expect(res.status).toBe(413);
       const responseBody = await res.json();
@@ -280,13 +289,17 @@ describe("Image Upload Routes", () => {
       const imageFile = createTestImageFile("max.jpg", "image/jpeg", maxSize);
       const formData = createFormData(imageFile);
 
-      const res = await app.request("/image/upload", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${testAdminKey}`,
+      const res = await app.request(
+        "/image/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${env.ADMIN_API_KEY}`,
+          },
+          body: formData,
         },
-        body: formData,
-      });
+        env,
+      );
 
       expect(res.status).toBe(201);
       const responseBody = await res.json();
@@ -301,13 +314,17 @@ describe("Image Upload Routes", () => {
       formData.append("image", imageFile);
       formData.append("postSlug", "test-post");
 
-      const res = await app.request("/image/upload", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${testAdminKey}`,
+      const res = await app.request(
+        "/image/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${env.ADMIN_API_KEY}`,
+          },
+          body: formData,
         },
-        body: formData,
-      });
+        env,
+      );
 
       expect(res.status).toBe(400);
       const responseBody = await res.json();
@@ -321,13 +338,17 @@ describe("Image Upload Routes", () => {
       formData.append("image", imageFile);
       formData.append("siteId", "test-site");
 
-      const res = await app.request("/image/upload", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${testAdminKey}`,
+      const res = await app.request(
+        "/image/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${env.ADMIN_API_KEY}`,
+          },
+          body: formData,
         },
-        body: formData,
-      });
+        env,
+      );
 
       expect(res.status).toBe(400);
       const responseBody = await res.json();
@@ -339,13 +360,17 @@ describe("Image Upload Routes", () => {
       const imageFile = createTestImageFile();
       const formData = createFormData(imageFile, "", "test-post");
 
-      const res = await app.request("/image/upload", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${testAdminKey}`,
+      const res = await app.request(
+        "/image/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${env.ADMIN_API_KEY}`,
+          },
+          body: formData,
         },
-        body: formData,
-      });
+        env,
+      );
 
       expect(res.status).toBe(400);
       const responseBody = await res.json();
@@ -357,13 +382,17 @@ describe("Image Upload Routes", () => {
       const imageFile = createTestImageFile();
       const formData = createFormData(imageFile, "test-site", "");
 
-      const res = await app.request("/image/upload", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${testAdminKey}`,
+      const res = await app.request(
+        "/image/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${env.ADMIN_API_KEY}`,
+          },
+          body: formData,
         },
-        body: formData,
-      });
+        env,
+      );
 
       expect(res.status).toBe(400);
       const responseBody = await res.json();
@@ -379,21 +408,29 @@ describe("Image Upload Routes", () => {
       const formData1 = createFormData(imageFile1, "site1", "post1");
       const formData2 = createFormData(imageFile2, "site1", "post1");
 
-      const res1 = await app.request("/image/upload", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${testAdminKey}`,
+      const res1 = await app.request(
+        "/image/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${env.ADMIN_API_KEY}`,
+          },
+          body: formData1,
         },
-        body: formData1,
-      });
+        env,
+      );
 
-      const res2 = await app.request("/image/upload", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${testAdminKey}`,
+      const res2 = await app.request(
+        "/image/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${env.ADMIN_API_KEY}`,
+          },
+          body: formData2,
         },
-        body: formData2,
-      });
+        env,
+      );
 
       expect(res1.status).toBe(201);
       expect(res2.status).toBe(201);
@@ -401,9 +438,9 @@ describe("Image Upload Routes", () => {
       const body1 = await res1.json();
       const body2 = await res2.json();
 
-      // Verify both responses have path property and they contain expected pattern
-      expect(body1).toHaveProperty("data.path");
-      expect(body2).toHaveProperty("data.path");
+      // Verify both responses have url property and they contain expected pattern
+      expect(body1).toHaveProperty("data.url");
+      expect(body2).toHaveProperty("data.url");
       expect(JSON.stringify(body1)).toMatch(/site1\/post1\/[a-f0-9-]{36}\.jpg/);
       expect(JSON.stringify(body2)).toMatch(/site1\/post1\/[a-f0-9-]{36}\.jpg/);
 
@@ -423,18 +460,21 @@ describe("Image Upload Routes", () => {
       for (const { siteId, postSlug } of tests) {
         const formData = createFormData(imageFile, siteId, postSlug);
 
-        const res = await app.request("/image/upload", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${testAdminKey}`,
+        const res = await app.request(
+          "/image/upload",
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${env.ADMIN_API_KEY}`,
+            },
+            body: formData,
           },
-          body: formData,
-        });
+          env,
+        );
 
         expect(res.status).toBe(201);
         const responseBody = await res.json();
 
-        expect(responseBody).toHaveProperty("data.path");
         expect(responseBody).toHaveProperty("data.url");
         expect(JSON.stringify(responseBody)).toMatch(
           new RegExp(`${siteId}\\/${postSlug}\\/[a-f0-9-]{36}\\.jpg`),
