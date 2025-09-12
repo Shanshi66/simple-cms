@@ -38,7 +38,7 @@ export function adminAuth(): MiddlewareHandler<{
       });
     }
 
-    const token = match[1];
+    const token = match[1]?.trim();
     if (!token) {
       throw new CustomHttpException(ErrorCode.INVALID_ADMIN_KEY, {
         message: "Missing admin API key in Authorization header",
