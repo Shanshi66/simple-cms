@@ -165,9 +165,6 @@ pnpm dev --filter=web
 
 # 只构建后端项目
 pnpm build --filter=service
-
-# 只检查 UI 组件库的类型
-pnpm check-types --filter=@repo/ui
 ```
 
 ## 🔧 开发指南

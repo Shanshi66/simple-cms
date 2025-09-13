@@ -1,5 +1,5 @@
 {
-  "name": "monorepo-template",
+  "name": "simple-cms",
   "private": true,
   "scripts": {
     "build": "turbo run build",

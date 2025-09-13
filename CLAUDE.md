@@ -31,8 +31,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Package Development
 
-- `pnpm --filter=@repo/ui build` - Build UI package
-- `pnpm --filter=@repo/ui check-types` - Type check UI package
 - `scripts/db.sh` - Generate Better Auth schema (runs `@better-auth/cli generate`)
 
 ### Template Creation
@@ -53,7 +51,6 @@ This is a Turborepo monorepo with two main applications and shared packages:
 
 **Shared Packages:**
 
-- `@repo/ui` - shadcn/ui component library with Tailwind CSS 4, includes theme provider and common components
 - `@repo/tsconfig` - Shared TypeScript configurations (base, react, cloudflare variants)
 - `@repo/types` - Shared TypeScript type definitions (i18n, ui types)
 
