@@ -46,6 +46,10 @@ const errors: Record<ErrorCode, ErrorDetail> = {
     message: "Site not found",
     status: 404,
   },
+  [ErrorCode.SITE_EXISTS]: {
+    message: "A site with this name already exists",
+    status: 409,
+  },
   // Image upload error mappings
   [ErrorCode.INVALID_ADMIN_KEY]: {
     message: "Invalid or missing admin API key",

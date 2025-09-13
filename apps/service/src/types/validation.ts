@@ -55,7 +55,14 @@ export const createArticleSchema = z.object({
   content: z.string().min(1, "Content is required"),
 });
 
+// Request body validation for site creation
+export const createSiteSchema = z.object({
+  name: z.string().min(1, "Site name is required"),
+  description: z.string().optional(),
+});
+
 export type ArticleListQuery = z.infer<typeof articleListQuerySchema>;
 export type ArticleDetailParams = z.infer<typeof articleDetailParamsSchema>;
 export type ArticleSiteParam = z.infer<typeof articleSiteParamSchema>;
 export type CreateArticleBody = z.infer<typeof createArticleSchema>;
+export type CreateSiteBody = z.infer<typeof createSiteSchema>;
