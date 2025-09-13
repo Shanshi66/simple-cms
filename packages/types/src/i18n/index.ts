@@ -1,11 +1,6 @@
-export enum Locale {
-  EN = "en",
-  ZH_CN = "zh-CN",
-}
+export const Language = {
+  EN: "en",
+  ZH_CN: "zh-CN",
+} as const;
 
-export interface LocaleInfo {
-  flag: string;
-  name: string;
-}
-
-export type LocaleData = Record<Locale, LocaleInfo>;
+export type Language = (typeof Language)[keyof typeof Language];

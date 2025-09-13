@@ -1,4 +1,5 @@
-import { ArticleMetadataInput, Language } from "@repo/types/api";
+import { ArticleMetadataInput } from "@repo/types/api";
+import { Language } from "@repo/types/i18n";
 
 // Frontend-specific article data structure
 export interface ArticleData {

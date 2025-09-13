@@ -1,10 +1,6 @@
 import { z } from "zod";
-import {
-  ArticleStatus,
-  Language,
-  SLUG_REGEX,
-  DATE_REGEX,
-} from "@repo/types/api";
+import { ArticleStatus, SLUG_REGEX, DATE_REGEX } from "@repo/types/api";
+import { Language } from "@repo/types/i18n";
 
 // Query parameters validation for article list endpoint
 export const articleListQuerySchema = z.object({

@@ -1,7 +1,7 @@
 import { readFile } from "fs-extra";
 import matter from "gray-matter";
 import { compile } from "@mdx-js/mdx";
-import { ArticleMetadataInput } from "@repo/types/cms";
+import { ArticleMetadataInput } from "@repo/types/api";
 import { ParseResult } from "@/types/article";
 import { Validator, ValidationError } from "./validator";
 

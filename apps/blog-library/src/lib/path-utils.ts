@@ -1,5 +1,5 @@
 import path from "path";
-import { Language } from "@repo/types/api";
+import { Language } from "@repo/types/i18n";
 
 export interface PathInfo {
   siteId: string;

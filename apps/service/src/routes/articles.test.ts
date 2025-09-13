@@ -1,7 +1,8 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import app from "./articles";
 import { generateApiKey, hashApiKey } from "@/lib/crypto";
-import { ArticleStatus, Language } from "@repo/types/api";
+import { ArticleStatus } from "@repo/types/api";
+import { Language } from "@repo/types/i18n";
 import { env } from "cloudflare:test";
 import { createDb, D1DB } from "@/db";
 import {

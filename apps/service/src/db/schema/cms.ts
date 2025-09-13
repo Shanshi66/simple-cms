@@ -1,4 +1,5 @@
-import { ArticleStatus, Language } from "@repo/types/api";
+import { ArticleStatus } from "@repo/types/api";
+import { Language } from "@repo/types/i18n";
 import {
   sqliteTable,
   text,

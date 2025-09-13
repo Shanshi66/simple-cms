@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Language } from "@repo/types/i18n";
 
 // Base enums for CMS
 export const ArticleStatus = {
@@ -7,13 +8,6 @@ export const ArticleStatus = {
 } as const;
 
 export type ArticleStatus = (typeof ArticleStatus)[keyof typeof ArticleStatus];
-
-export const Language = {
-  EN: "en",
-  ZH_CN: "zh-CN",
-} as const;
-
-export type Language = (typeof Language)[keyof typeof Language];
 
 // Validation constants
 export const SLUG_REGEX = /^[a-z0-9-]+$/;

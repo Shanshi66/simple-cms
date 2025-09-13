@@ -1,10 +1,10 @@
 // Article API Types
 import type {
   ArticleStatus,
-  Language,
   CreateArticleRequest,
   CreateArticleResponse,
-} from "@repo/types/cms";
+} from "@repo/types/api";
+import type { Language } from "@repo/types/i18n";
 
 // Re-export shared types for backward compatibility
 export type {
