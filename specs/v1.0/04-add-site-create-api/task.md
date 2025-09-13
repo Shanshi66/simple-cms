@@ -49,11 +49,11 @@
 
 **Task**
 
-- [ ] 更新应用程序路由配置
-  - [ ] 3.1 在 `apps/service/src/index.ts` 中导入 sites 路由模块
-  - [ ] 3.2 在 `apps/service/src/index.ts` 中导入 api-keys 路由模块
-  - [ ] 3.3 将 sites 路由注册到应用程序中，使用 `/api` 基础路径
-  - [ ] 3.4 将 api-keys 路由注册到应用程序中，使用 `/api` 基础路径
+- [x] 更新应用程序路由配置
+  - [x] 3.1 在 `apps/service/src/index.ts` 中导入 sites 路由模块
+  - [x] 3.2 在 `apps/service/src/index.ts` 中导入 api-keys 路由模块
+  - [x] 3.3 将 sites 路由注册到应用程序中，使用 `/api` 基础路径
+  - [x] 3.4 将 api-keys 路由注册到应用程序中，使用 `/api` 基础路径
 
 **Files**
 
@@ -63,12 +63,12 @@
 
 **Task**
 
-- [ ] 添加 API 响应类型定义
-  - [ ] 4.1 在 `apps/service/src/types/api.ts` 中添加 `Site` 类型定义
-  - [ ] 4.2 在 `apps/service/src/types/api.ts` 中添加 `SiteListResponse` 类型定义
-  - [ ] 4.3 在 `apps/service/src/types/api.ts` 中添加 `CreateSiteResponse` 类型定义
-  - [ ] 4.4 在 `apps/service/src/types/api.ts` 中添加 `ApiKey` 类型定义
-  - [ ] 4.5 在 `apps/service/src/types/api.ts` 中添加 `CreateApiKeyResponse` 类型定义
+- [x] 添加 API 响应类型定义
+  - [x] 4.1 在 `apps/service/src/types/api.ts` 中添加 `Site` 类型定义
+  - [x] 4.2 在 `apps/service/src/types/api.ts` 中添加 `SiteListResponse` 类型定义
+  - [x] 4.3 在 `apps/service/src/types/api.ts` 中添加 `CreateSiteResponse` 类型定义
+  - [x] 4.4 在 `apps/service/src/types/api.ts` 中添加 `ApiKey` 类型定义
+  - [x] 4.5 在 `apps/service/src/types/api.ts` 中添加 `CreateApiKeyResponse` 类型定义
 
 **Files**
 
