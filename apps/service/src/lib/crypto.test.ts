@@ -24,18 +24,31 @@ describe("Crypto Utilities", () => {
       const key2 = generateApiKey();
       const key3 = generateApiKey();
 
-      expect(key1.length).toBeGreaterThan(40); // Base64url encoded 32 bytes should be ~43 chars
+      expect(key1.length).toBeGreaterThan(45); // Base64url encoded 32 bytes (~43 chars) + "sk_" prefix (3 chars) = ~46 chars
       expect(key1.length).toBe(key2.length);
       expect(key1.length).toBe(key3.length);
     });
 
-    it("should generate URL-safe base64 strings", () => {
+    it("should generate keys with sk_ prefix", () => {
       const key = generateApiKey();
 
+      expect(key).toMatch(/^sk_/);
+      expect(key.startsWith("sk_")).toBe(true);
+    });
+
+    it("should generate URL-safe base64 strings with sk_ prefix", () => {
+      const key = generateApiKey();
+
+      // Should start with "sk_"
+      expect(key.startsWith("sk_")).toBe(true);
+
+      // Remove the prefix for base64 validation
+      const base64Part = key.substring(3);
+
       // Should not contain +, /, or = characters (URL-safe base64)
-      expect(key).not.toMatch(/[+/=]/);
+      expect(base64Part).not.toMatch(/[+/=]/);
       // Should only contain valid base64url characters
-      expect(key).toMatch(/^[A-Za-z0-9_-]+$/);
+      expect(base64Part).toMatch(/^[A-Za-z0-9_-]+$/);
     });
 
     it("should generate keys with sufficient entropy", () => {

@@ -25,17 +25,17 @@
 
 **Task**
 
-- [ ] 实现 API Key 管理接口
-  - [ ] 2.1 在 `apps/service/src/types/validation.ts` 中添加 `createApiKeySchema` 和路径参数验证模式
-  - [ ] 2.2 在 `apps/service/src/lib/crypto.ts` 中添加 `generateApiKey` 函数生成 "sk\_" 前缀的密钥
-  - [ ] 2.3 在 `apps/service/src/lib/crypto.ts` 中添加 `hashApiKey` 函数用于哈希加密 API Key
-  - [ ] 2.4 为 crypto 工具函数编写单元测试
-  - [ ] 2.5 创建 `apps/service/src/routes/api-keys.ts` 路由文件，设置基础路由结构
-  - [ ] 2.6 在 api-keys 路由中添加 admin 认证中间件
-  - [ ] 2.7 实现 `POST /sites/{siteId}/api-keys` 接口：验证网站存在、生成密钥、哈希存储、返回明文密钥
-  - [ ] 2.8 添加错误处理：网站不存在 (404)、验证错误 (400)、认证失败 (401)
-  - [ ] 2.9 创建 `apps/service/src/routes/api-keys.test.ts` 集成测试文件
-  - [ ] 2.10 编写 API Key 创建接口的集成测试：成功创建、网站不存在错误、验证错误、认证错误
+- [x] 实现 API Key 管理接口
+  - [x] 2.1 在 `apps/service/src/types/validation.ts` 中添加 `createApiKeySchema` 和路径参数验证模式
+  - [x] 2.2 在 `apps/service/src/lib/crypto.ts` 中添加 `generateApiKey` 函数生成 "sk\_" 前缀的密钥
+  - [x] 2.3 在 `apps/service/src/lib/crypto.ts` 中添加 `hashApiKey` 函数用于哈希加密 API Key
+  - [x] 2.4 为 crypto 工具函数编写单元测试
+  - [x] 2.5 创建 `apps/service/src/routes/api-keys.ts` 路由文件，设置基础路由结构
+  - [x] 2.6 在 api-keys 路由中添加 admin 认证中间件
+  - [x] 2.7 实现 `POST /sites/{siteId}/api-keys` 接口：验证网站存在、生成密钥、哈希存储、返回明文密钥
+  - [x] 2.8 添加错误处理：网站不存在 (404)、验证错误 (400)、认证失败 (401)
+  - [x] 2.9 创建 `apps/service/src/routes/api-keys.test.ts` 集成测试文件
+  - [x] 2.10 编写 API Key 创建接口的集成测试：成功创建、网站不存在错误、验证错误、认证错误
 
 **Files**
 
