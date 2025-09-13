@@ -9,7 +9,7 @@ import {
 
 export const sites = sqliteTable("sites", {
   id: text("id").primaryKey(),
-  name: text("name").notNull(),
+  name: text("name").notNull().unique(),
   description: text("description"),
   createdAt: integer("created_at", { mode: "timestamp" })
     .$defaultFn(() => new Date())

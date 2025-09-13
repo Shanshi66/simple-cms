@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `sites_name_unique` ON `sites` (`name`);
