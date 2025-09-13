@@ -5,8 +5,7 @@
   "scripts": {
     "imgUpload": "tsx scripts/imgUpload.ts",
     "blogUpload": "tsx scripts/blogUpload.ts",
-    "build": "tsc",
-    "dev": "tsx --watch",
+    "build": "tsc -b",
     "test": "vitest",
     "check-types": "tsc --noEmit"
   },
