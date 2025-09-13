@@ -74,3 +74,21 @@ export interface CreateSiteResponse {
   created_at: string;
   updated_at: string;
 }
+
+// API Key API Types
+export interface ApiKey {
+  id: string;
+  name: string;
+  siteId: string;
+  expiresAt: string | null;
+  createdAt: string;
+}
+
+export interface CreateApiKeyResponse {
+  id: string;
+  apiKey: string;
+  name: string;
+  siteId: string;
+  expiresAt: string | null;
+  createdAt: string;
+}

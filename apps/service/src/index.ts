@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import articles from "./routes/articles";
 import image from "./routes/image";
 import sites from "./routes/sites";
+import apiKeys from "./routes/api-keys";
 import { errorHandler } from "./error";
 import { CFBindings, MiddlewareVars } from "./types/context";
 
@@ -15,5 +16,6 @@ app.onError(errorHandler);
 app.basePath("/api").route("/", articles);
 app.basePath("/api").route("/", image);
 app.basePath("/api").route("/", sites);
+app.basePath("/api").route("/", apiKeys);
 
 export default app;

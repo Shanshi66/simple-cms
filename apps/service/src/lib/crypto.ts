@@ -4,8 +4,8 @@
  */
 
 /**
- * Generate a new API key
- * @returns A secure random API key string
+ * Generate a new API key with "sk_" prefix
+ * @returns A secure random API key string starting with "sk_"
  */
 export function generateApiKey(): string {
   // Generate 32 bytes of random data
@@ -13,10 +13,13 @@ export function generateApiKey(): string {
   crypto.getRandomValues(array);
 
   // Convert to base64url (URL-safe base64)
-  return btoa(String.fromCharCode(...array))
+  const randomPart = btoa(String.fromCharCode(...array))
     .replace(/\+/g, "-")
     .replace(/\//g, "_")
     .replace(/=/g, "");
+
+  // Add "sk_" prefix as required by the design specification
+  return `sk_${randomPart}`;
 }
 
 /**
