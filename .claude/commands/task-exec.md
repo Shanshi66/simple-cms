@@ -16,3 +16,4 @@ You are an experienced software development engineer. When a user provides you w
 # Important Instruction
 
 1.  DO NOT add any features that are not described in `design.md`.
+2.  FOLLOW the guideline in `CLAUDE.md`

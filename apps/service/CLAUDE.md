@@ -42,3 +42,12 @@ Schemas that are only used in the service should be stored in `src/types`. If a 
 3. DO NOT check `message` field in test, just check `success`, `error code`, `status code`, `data` fields
 4. Import hono instance as `app` from `route` that need to test, DO NOT create hono instance.
 5. Add `env` to every request, avoid to mock env, `const res = await app.request("/sites/test-site/articles", {}, env);`
+6. Add error handle in `beforeEach`, don't add it in non-test file
+
+### Troubleshoot
+
+1. Try to use type annotation when meeting `unknown type`, for example, `const responseData: ApiResponse<CreateSiteResponse> = await res.json();`
+
+### Important Instruction
+
+1. DO NOT add any test code to non-test files.
