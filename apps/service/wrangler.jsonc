@@ -5,27 +5,8 @@
   "compatibility_date": "2025-08-18",
   "compatibility_flags": ["nodejs_compat"],
   "vars": {
-    "CLIENT_URL": "http://localhost:5173",
-    "BASE_URL": "http://localhost:3000",
-    "NODE_ENV": "development",
     "R2_PUBLIC_DOMAIN": "your-r2-public-domain.com",
   },
-  "env": {
-    "production": {
-      "vars": {
-        "CLIENT_URL": "https://your-production-client-url.com",
-        "BASE_URL": "https://your-production-base-url.com",
-        "NODE_ENV": "production",
-        "R2_PUBLIC_DOMAIN": "your-production-r2-domain.com",
-      },
-    },
-  },
-  // "kv_namespaces": [
-  //   {
-  //     "binding": "MY_KV_NAMESPACE",
-  //     "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-  //   }
-  // ],
   "d1_databases": [
     {
       "binding": "DB",
