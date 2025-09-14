@@ -21,8 +21,8 @@ This is a monorepo with two main applications and shared packages:
 The project uses a modern ESLint flat configuration with:
 
 - TypeScript ESLint recommended and stylistic rules
-- Turbo plugin for monorepo-specific linting
 - Strict import rules: no relative imports (`../`, `../../`), no file extensions in imports
+- Use as less `any` as possible
 - Prettier integration for consistent code formatting
 - Project-wide type checking with TypeScript service
 

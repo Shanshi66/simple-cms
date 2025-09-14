@@ -9,7 +9,3 @@ This package stores data types that are shared across multiple packages or apps.
 - `src/api`: Stores data structures for communication between the frontend and backend APIs.
 - `src/error`: Stores error types that are shared across multiple services.
 - `src/i18n`: Stores common internationalization-related data types.
-
-## How to export types
-
-In each directory, such as `src/api`, the `index.ts` file needs to export all types.
