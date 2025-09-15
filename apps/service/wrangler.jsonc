@@ -4,9 +4,6 @@
   "main": "src/index.ts",
   "compatibility_date": "2025-08-18",
   "compatibility_flags": ["nodejs_compat"],
-  "vars": {
-    "R2_PUBLIC_DOMAIN": "your-r2-public-domain.com",
-  },
   "d1_databases": [
     {
       "binding": "DB",
