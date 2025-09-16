@@ -1,5 +1,11 @@
 import { z } from "zod";
-import { ArticleStatus, SLUG_REGEX, DATE_REGEX } from "@repo/types/api";
+import {
+  ArticleStatus,
+  SLUG_REGEX,
+  DATE_REGEX,
+  CreateSiteRequestSchema,
+  CreateApiKeyRequestSchema,
+} from "@repo/types/api";
 import { Language } from "@repo/types/i18n";
 
 // Query parameters validation for article list endpoint
@@ -60,27 +66,13 @@ export const createArticleSchema = z.object({
   content: z.string().min(1, "Content is required"),
 });
 
-// Request body validation for site creation
-export const createSiteSchema = z.object({
-  name: z.string().min(1, "Site name is required"),
-  description: z.string().optional(),
-});
+// Re-export shared schemas with consistent naming
+export const createSiteSchema = CreateSiteRequestSchema;
+export const createApiKeySchema = CreateApiKeyRequestSchema;
 
 // Path parameters validation for site ID
 export const siteIdParamSchema = z.object({
   siteId: z.string().min(1, "Site ID is required"),
-});
-
-// Request body validation for API key creation
-export const createApiKeySchema = z.object({
-  name: z.string().min(1, "API Key name is required"),
-  expiresAt: z
-    .string()
-    .regex(
-      /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/,
-      "expiresAt must be a valid ISO 8601 datetime",
-    )
-    .optional(),
 });
 
 export type ArticleListQuery = z.infer<typeof articleListQuerySchema>;
@@ -88,6 +80,4 @@ export type ArticleDetailParams = z.infer<typeof articleDetailParamsSchema>;
 export type SiteNameParam = z.infer<typeof siteNameParamSchema>;
 export type ArticleSiteParam = z.infer<typeof articleSiteParamSchema>;
 export type CreateArticleBody = z.infer<typeof createArticleSchema>;
-export type CreateSiteBody = z.infer<typeof createSiteSchema>;
 export type SiteIdParam = z.infer<typeof siteIdParamSchema>;
-export type CreateApiKeyBody = z.infer<typeof createApiKeySchema>;
