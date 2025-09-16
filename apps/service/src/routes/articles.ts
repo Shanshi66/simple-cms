@@ -21,6 +21,7 @@ import {
   ArticleDetail,
   CreateArticleResponse,
 } from "@/types/api";
+import { adminAuth } from "@/middleware/admin-auth";
 
 const router = new Hono<{ Bindings: CFBindings; Variables: MiddlewareVars }>();
 
@@ -200,7 +201,7 @@ router.get(
 // POST /sites/{name}/articles - Create new article
 router.post(
   "/sites/:name/articles",
-  apiAuth(),
+  adminAuth(),
   zValidator("param", siteNameParamSchema),
   zValidator("json", createArticleSchema),
   async (c) => {
