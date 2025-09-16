@@ -25,7 +25,12 @@
 可直接在本地用 mdx 写博客，在本地完成验证并上传，具体步骤如下：
 
 1. 将 `sample-content` 目录重命名为 `content`，`content`目录下每个子目录是一个网站，每个网站下的子目录是多语言
-2. 在
+2. 将 `blog-library` 目录下的 `.env.example` 重命名为 `.env`, 需要填写两个变量
+   1. `CMS_BASE_URL`: 服务端部署之后的 URL
+   2. `ADMIN_API_KEY`: 管理权限 API， 同服务端环境变量
+3. 在 `blog-library` 目录下运行 `pnpm run createSite test "test site"`，会调用远端服务创建网站，第一个参数为网站名称，第二个为描述（可选）
+4. 在 `blog-library` 目录下运行 `pnpm run imgUpload test/zh-CN/first-blog.mdx`，会调用接口将博客中的图片上传，并替换链接
+5. 在 `blog-library` 目录下运行 `pnpm run blogUpload test/zh-CN/first-blog.mdx`，会调用接口将博客上传
 
 ## 开发
 
