@@ -13,51 +13,53 @@ import { SiteListResponse, CreateSiteResponse } from "@/types/api";
 
 const router = new Hono<{ Bindings: CFBindings; Variables: MiddlewareVars }>();
 
-// Apply admin authentication middleware to all routes
-router.use("*", adminAuth());
-
 // POST /sites - Create new site
-router.post("/sites", zValidator("json", createSiteSchema), async (c) => {
-  const { name, description } = c.req.valid("json");
-  const db = createDb(c.env.DB);
+router.post(
+  "/sites",
+  adminAuth(),
+  zValidator("json", createSiteSchema),
+  async (c) => {
+    const { name, description } = c.req.valid("json");
+    const db = createDb(c.env.DB);
 
-  // Check if site with same name already exists
-  const existingSite = await db
-    .select({ name: sites.name })
-    .from(sites)
-    .where(eq(sites.name, name))
-    .get();
+    // Check if site with same name already exists
+    const existingSite = await db
+      .select({ name: sites.name })
+      .from(sites)
+      .where(eq(sites.name, name))
+      .get();
 
-  if (existingSite) {
-    throw new CustomHttpException(ErrorCode.SITE_EXISTS, {
-      message: "A site with this name already exists",
+    if (existingSite) {
+      throw new CustomHttpException(ErrorCode.SITE_EXISTS, {
+        message: "A site with this name already exists",
+      });
+    }
+
+    // Generate unique site ID and create new site
+    const id = crypto.randomUUID();
+    const now = new Date();
+    await db.insert(sites).values({
+      id,
+      name,
+      description: description ?? null,
+      createdAt: now,
+      updatedAt: now,
     });
-  }
 
-  // Generate unique site ID and create new site
-  const id = crypto.randomUUID();
-  const now = new Date();
-  await db.insert(sites).values({
-    id,
-    name,
-    description: description ?? null,
-    createdAt: now,
-    updatedAt: now,
-  });
+    const response: CreateSiteResponse = {
+      id,
+      name,
+      description: description ?? null,
+      created_at: now.toISOString(),
+      updated_at: now.toISOString(),
+    };
 
-  const response: CreateSiteResponse = {
-    id,
-    name,
-    description: description ?? null,
-    created_at: now.toISOString(),
-    updated_at: now.toISOString(),
-  };
-
-  return c.json(createSuccessResponse(response), 201);
-});
+    return c.json(createSuccessResponse(response), 201);
+  },
+);
 
 // GET /sites - Get all sites
-router.get("/sites", async (c) => {
+router.get("/sites", adminAuth(), async (c) => {
   const db = createDb(c.env.DB);
 
   // Get all sites

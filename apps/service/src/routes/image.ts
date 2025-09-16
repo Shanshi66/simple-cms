@@ -10,13 +10,10 @@ import {
 import { ImageUploadSuccessData } from "@repo/types/api";
 import { CustomHttpException } from "@/error";
 import { createSuccessResponse } from "@/lib/utils";
-import { adminAuth } from "@/middleware/admin-auth";
 import { CFBindings, MiddlewareVars } from "@/types/context";
+import { adminAuth } from "@/middleware/admin-auth";
 
 const router = new Hono<{ Bindings: CFBindings; Variables: MiddlewareVars }>();
-
-// Apply admin authentication middleware to all routes
-router.use("*", adminAuth());
 
 // Helper function to get file extension from content type
 function getFileExtension(contentType: ImageContentType): string {
@@ -56,6 +53,7 @@ function validateFileSize(size: number): void {
 // POST /image/upload - Upload image to R2 storage
 router.post(
   "/image/upload",
+  adminAuth(),
   zValidator("form", ImageUploadFormSchema),
   async (c): Promise<Response> => {
     const { siteName, postSlug } = c.req.valid("form");

@@ -13,12 +13,10 @@ import { createApiKeySchema, siteNameParamSchema } from "@/types/validation";
 
 const router = new Hono<{ Bindings: CFBindings; Variables: MiddlewareVars }>();
 
-// Apply admin authentication middleware to all routes
-router.use("*", adminAuth());
-
 // POST /sites/{name}/api-keys - Create new API key for a site
 router.post(
   "/sites/:name/api-keys",
+  adminAuth(),
   zValidator("param", siteNameParamSchema),
   zValidator("json", createApiKeySchema),
   async (c) => {

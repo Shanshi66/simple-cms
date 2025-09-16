@@ -41,12 +41,10 @@ async function getSiteIdFromName(db: D1DB, siteName: string): Promise<string> {
   return site.id;
 }
 
-// Apply authentication middleware to all routes
-router.use("*", apiAuth());
-
 // GET /sites/{name}/articles - Get articles list with pagination
 router.get(
   "/sites/:name/articles",
+  apiAuth(),
   zValidator("param", siteNameParamSchema),
   zValidator("query", articleListQuerySchema),
   async (c) => {
@@ -132,6 +130,7 @@ router.get(
 // GET /sites/{name}/articles/{lang}/{slug} - Get article detail
 router.get(
   "/sites/:name/articles/:lang/:slug",
+  apiAuth(),
   zValidator("param", articleDetailParamsSchema),
   async (c) => {
     const { name, lang, slug } = c.req.valid("param");
@@ -201,6 +200,7 @@ router.get(
 // POST /sites/{name}/articles - Create new article
 router.post(
   "/sites/:name/articles",
+  apiAuth(),
   zValidator("param", siteNameParamSchema),
   zValidator("json", createArticleSchema),
   async (c) => {
