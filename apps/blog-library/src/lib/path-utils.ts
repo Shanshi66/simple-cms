@@ -2,15 +2,15 @@ import path from "path";
 import { Language } from "@repo/types/i18n";
 
 export interface PathInfo {
-  siteId: string;
+  siteName: string;
   language: Language;
   filename: string;
   fullPath: string;
 }
 
 /**
- * Parse file path to extract site ID, language, and filename
- * Expected format: siteId/language/filename.mdx
+ * Parse file path to extract site name, language, and filename
+ * Expected format: siteName/language/filename.mdx
  */
 export function parseFilePath(filePath: string): PathInfo {
   const normalizedPath = path.normalize(filePath);
@@ -18,11 +18,11 @@ export function parseFilePath(filePath: string): PathInfo {
 
   if (parts.length < 3) {
     throw new Error(
-      "Invalid file path format. Expected format: siteId/language/filename.mdx",
+      "Invalid file path format. Expected format: siteName/language/filename.mdx",
     );
   }
 
-  const siteId = parts[parts.length - 3]!;
+  const siteName = parts[parts.length - 3]!;
   const language = parts[parts.length - 2] as Language;
   const filename = parts[parts.length - 1]!;
 
@@ -42,10 +42,10 @@ export function parseFilePath(filePath: string): PathInfo {
 
   // Build full path relative to content directory
   const contentDir = path.join(process.cwd(), "content");
-  const fullPath = path.join(contentDir, siteId, language, filename);
+  const fullPath = path.join(contentDir, siteName, language, filename);
 
   return {
-    siteId,
+    siteName,
     language,
     filename,
     fullPath,

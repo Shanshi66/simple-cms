@@ -23,7 +23,7 @@ export class BlogUploader {
   /**
    * Load site configuration from environment variables
    */
-  private loadSiteConfig(siteId: string): SiteConfig {
+  private loadSiteConfig(siteName: string): SiteConfig {
     const apiKey = process.env.ADMIN_API_KEY;
 
     if (!apiKey) {
@@ -33,7 +33,7 @@ export class BlogUploader {
     }
 
     return {
-      id: siteId,
+      name: siteName,
       apiKey,
     };
   }
@@ -63,7 +63,7 @@ export class BlogUploader {
       // Parse file path
       const pathInfo = parseFilePath(filePath);
       console.log(
-        `🔍 Detected: Site="${pathInfo.siteId}", Language="${pathInfo.language}"`,
+        `🔍 Detected: Site="${pathInfo.siteName}", Language="${pathInfo.language}"`,
       );
 
       // Check if file exists
@@ -72,9 +72,9 @@ export class BlogUploader {
       }
 
       // Load site configuration and base URL
-      const siteConfig = this.loadSiteConfig(pathInfo.siteId);
+      const siteConfig = this.loadSiteConfig(pathInfo.siteName);
       const baseURL = this.loadBaseURL();
-      console.log(`⚙️  Loaded configuration for site "${pathInfo.siteId}"`);
+      console.log(`⚙️  Loaded configuration for site "${pathInfo.siteName}"`);
 
       // Parse MDX file
       console.log(`📖 Parsing MDX file...`);
@@ -110,7 +110,7 @@ export class BlogUploader {
       console.log(`🚀 Uploading article to API...`);
       const apiClient = new APIClient(baseURL, siteConfig.apiKey);
       const response = await apiClient.createArticle(
-        siteConfig.id,
+        siteConfig.name,
         articleData,
       );
 
@@ -196,8 +196,8 @@ export class BlogUploader {
     return parseFilePath(filePath);
   }
 
-  public testLoadSiteConfig(siteId: string) {
-    return this.loadSiteConfig(siteId);
+  public testLoadSiteConfig(siteName: string) {
+    return this.loadSiteConfig(siteName);
   }
 
   public testCheckLocalImages(content: string): boolean {
@@ -212,7 +212,7 @@ program
   .version("1.0.0")
   .argument(
     "<file-path>",
-    "Path to MDX file (format: siteId/language/filename.mdx)",
+    "Path to MDX file (format: siteName/language/filename.mdx)",
   )
   .action(async (filePath: string) => {
     const uploader = new BlogUploader();

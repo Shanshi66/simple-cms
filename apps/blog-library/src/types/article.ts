@@ -10,7 +10,7 @@ export interface ArticleData {
 
 // Frontend-specific site configuration
 export interface SiteConfig {
-  id: string;
+  name: string;
   apiKey: string;
 }
 

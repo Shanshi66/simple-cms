@@ -23,17 +23,17 @@ export class APIClient {
    * Create an article for a specific site
    */
   async createArticle(
-    siteId: string,
+    siteName: string,
     articleData: CreateArticleRequest,
   ): Promise<CreateArticleResponse> {
-    if (!siteId) {
-      throw new Error("Site ID is required");
+    if (!siteName) {
+      throw new Error("Site name is required");
     }
 
     // Validate request data using Zod schema
     const validatedData = CreateArticleRequestSchema.parse(articleData);
 
-    const url = `${this.baseURL}/sites/${siteId}/articles`;
+    const url = `${this.baseURL}/sites/${siteName}/articles`;
     const requestOptions = {
       method: "POST",
       headers: {

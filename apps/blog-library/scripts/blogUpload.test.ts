@@ -37,7 +37,7 @@ interface MockMDXParser {
 interface MockAPIClient {
   createArticle: MockedFunction<
     (
-      siteId: string,
+      siteName: string,
       articleData: CreateArticleRequest,
     ) => Promise<CreateArticleResponse>
   >;
@@ -85,7 +85,7 @@ describe("BlogUploader", () => {
     it("should parse valid file path correctly", () => {
       const result = uploader.testParseFilePath("site1/zh-CN/test-article.mdx");
 
-      expect(result.siteId).toBe("site1");
+      expect(result.siteName).toBe("site1");
       expect(result.language).toBe("zh-CN");
       expect(result.filename).toBe("test-article.mdx");
       expect(result.fullPath).toContain(
@@ -96,7 +96,7 @@ describe("BlogUploader", () => {
     it("should handle English language", () => {
       const result = uploader.testParseFilePath("mysite/en/blog-post.mdx");
 
-      expect(result.siteId).toBe("mysite");
+      expect(result.siteName).toBe("mysite");
       expect(result.language).toBe("en");
       expect(result.filename).toBe("blog-post.mdx");
     });
@@ -120,7 +120,7 @@ describe("BlogUploader", () => {
     it("should handle nested paths correctly", () => {
       const result = uploader.testParseFilePath("content/site1/zh-CN/test.mdx");
 
-      expect(result.siteId).toBe("site1");
+      expect(result.siteName).toBe("site1");
       expect(result.language).toBe("zh-CN");
       expect(result.filename).toBe("test.mdx");
     });
@@ -132,16 +132,16 @@ describe("BlogUploader", () => {
 
       const config = uploader.testLoadSiteConfig("site1");
 
-      expect(config.id).toBe("site1");
+      expect(config.name).toBe("site1");
       expect(config.apiKey).toBe("test-admin-key");
     });
 
-    it("should handle different case site IDs", () => {
+    it("should handle different case site names", () => {
       process.env.ADMIN_API_KEY = "admin-key";
 
       const config = uploader.testLoadSiteConfig("mysite");
 
-      expect(config.id).toBe("mysite");
+      expect(config.name).toBe("mysite");
       expect(config.apiKey).toBe("admin-key");
     });
 
