@@ -22,12 +22,12 @@ describe("Image Upload Routes", () => {
   // Helper function to create form data
   function createFormData(
     imageFile: File,
-    siteId = "test-site",
+    siteName = "test-site",
     postSlug = "test-post",
   ): FormData {
     const formData = new FormData();
     formData.append("image", imageFile);
-    formData.append("siteId", siteId);
+    formData.append("siteName", siteName);
     formData.append("postSlug", postSlug);
     return formData;
   }
@@ -206,7 +206,7 @@ describe("Image Upload Routes", () => {
   describe("File validation", () => {
     it("should reject missing image file", async () => {
       const formData = new FormData();
-      formData.append("siteId", "test-site");
+      formData.append("siteName", "test-site");
       formData.append("postSlug", "test-post");
 
       const res = await app.request(
@@ -308,7 +308,7 @@ describe("Image Upload Routes", () => {
   });
 
   describe("Form validation", () => {
-    it("should require siteId field", async () => {
+    it("should require siteName field", async () => {
       const imageFile = createTestImageFile();
       const formData = new FormData();
       formData.append("image", imageFile);
@@ -336,7 +336,7 @@ describe("Image Upload Routes", () => {
       const imageFile = createTestImageFile();
       const formData = new FormData();
       formData.append("image", imageFile);
-      formData.append("siteId", "test-site");
+      formData.append("siteName", "test-site");
 
       const res = await app.request(
         "/image/upload",
@@ -356,7 +356,7 @@ describe("Image Upload Routes", () => {
       expect(responseBody).toHaveProperty("error");
     });
 
-    it("should reject empty siteId", async () => {
+    it("should reject empty siteName", async () => {
       const imageFile = createTestImageFile();
       const formData = createFormData(imageFile, "", "test-post");
 
@@ -448,17 +448,17 @@ describe("Image Upload Routes", () => {
       expect(JSON.stringify(body1)).not.toBe(JSON.stringify(body2));
     });
 
-    it("should respect different siteId and postSlug combinations", async () => {
+    it("should respect different siteName and postSlug combinations", async () => {
       const imageFile = createTestImageFile();
 
       const tests = [
-        { siteId: "blog", postSlug: "hello-world" },
-        { siteId: "docs", postSlug: "getting-started" },
-        { siteId: "portfolio", postSlug: "project-showcase" },
+        { siteName: "blog", postSlug: "hello-world" },
+        { siteName: "docs", postSlug: "getting-started" },
+        { siteName: "portfolio", postSlug: "project-showcase" },
       ];
 
-      for (const { siteId, postSlug } of tests) {
-        const formData = createFormData(imageFile, siteId, postSlug);
+      for (const { siteName, postSlug } of tests) {
+        const formData = createFormData(imageFile, siteName, postSlug);
 
         const res = await app.request(
           "/image/upload",
@@ -477,10 +477,10 @@ describe("Image Upload Routes", () => {
 
         expect(responseBody).toHaveProperty("data.url");
         expect(JSON.stringify(responseBody)).toMatch(
-          new RegExp(`${siteId}\\/${postSlug}\\/[a-f0-9-]{36}\\.jpg`),
+          new RegExp(`${siteName}\\/${postSlug}\\/[a-f0-9-]{36}\\.jpg`),
         );
         expect(JSON.stringify(responseBody)).toContain(
-          `${siteId}/${postSlug}/`,
+          `${siteName}/${postSlug}/`,
         );
       }
     });

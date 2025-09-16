@@ -58,7 +58,7 @@ router.post(
   "/image/upload",
   zValidator("form", ImageUploadFormSchema),
   async (c): Promise<Response> => {
-    const { siteId, postSlug } = c.req.valid("form");
+    const { siteName, postSlug } = c.req.valid("form");
 
     // Get the uploaded file from form data
     const body = await c.req.parseBody();
@@ -79,7 +79,7 @@ router.post(
     // Generate unique filename with path structure
     const fileExtension = getFileExtension(imageFile.type as ImageContentType);
     const fileName = `${crypto.randomUUID()}.${fileExtension}`;
-    const filePath = `${siteId}/${postSlug}/${fileName}`;
+    const filePath = `${siteName}/${postSlug}/${fileName}`;
 
     try {
       // Convert File to ArrayBuffer for R2 upload

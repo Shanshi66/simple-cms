@@ -71,16 +71,16 @@ export class ImageUploader {
   private extractMetadata(
     metadata: Record<string, unknown>,
     pathInfo: PathInfo,
-  ): { siteId: string; slug: string } {
-    // Use siteId from file path and slug from frontmatter
-    const siteId = pathInfo.siteId;
+  ): { siteName: string; slug: string } {
+    // Use siteName from file path and slug from frontmatter
+    const siteName = pathInfo.siteName;
     const slug = metadata.slug as string;
 
     if (!slug) {
       throw new Error("Missing slug in MDX frontmatter");
     }
 
-    return { siteId, slug };
+    return { siteName, slug };
   }
 
   /**
@@ -88,7 +88,7 @@ export class ImageUploader {
    */
   private async uploadSingleImage(
     imagePath: string,
-    siteId: string,
+    siteName: string,
     postSlug: string,
   ): Promise<string> {
     if (!existsSync(imagePath)) {
@@ -98,7 +98,7 @@ export class ImageUploader {
     const formData = new FormData();
 
     formData.append("image", createReadStream(imagePath));
-    formData.append("siteId", siteId);
+    formData.append("siteName", siteName);
     formData.append("postSlug", postSlug);
 
     const url = `${this.baseURL}/image/upload`;
@@ -135,7 +135,7 @@ export class ImageUploader {
    */
   private async uploadImages(
     localImages: { original: string; resolved: string }[],
-    siteId: string,
+    siteName: string,
     slug: string,
   ): Promise<UploadResult[]> {
     const results: UploadResult[] = [];
@@ -145,7 +145,7 @@ export class ImageUploader {
         console.log(`📤 Uploading: ${image.original}`);
         const r2Url = await this.uploadSingleImage(
           image.resolved,
-          siteId,
+          siteName,
           slug,
         );
 
@@ -174,7 +174,7 @@ export class ImageUploader {
       // Parse file path
       const pathInfo = parseFilePath(filePath);
       console.log(
-        `🔍 Detected: Site="${pathInfo.siteId}", Language="${pathInfo.language}"`,
+        `🔍 Detected: Site="${pathInfo.siteName}", Language="${pathInfo.language}"`,
       );
 
       // Check if file exists
@@ -188,7 +188,7 @@ export class ImageUploader {
       const content = await readFile(pathInfo.fullPath, "utf-8");
 
       // Extract metadata
-      const { siteId, slug } = this.extractMetadata(
+      const { siteName, slug } = this.extractMetadata(
         parseResult.metadata,
         pathInfo,
       );
@@ -205,7 +205,11 @@ export class ImageUploader {
       localImages.forEach((img) => console.log(`   - ${img.original}`));
 
       // Upload images and get R2 URLs
-      const uploadResults = await this.uploadImages(localImages, siteId, slug);
+      const uploadResults = await this.uploadImages(
+        localImages,
+        siteName,
+        slug,
+      );
 
       // Replace local paths with R2 URLs
       let updatedContent = content;

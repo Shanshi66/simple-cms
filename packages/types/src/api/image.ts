@@ -14,7 +14,7 @@ export const MAX_IMAGE_FILE_SIZE = 5 * 1024 * 1024;
 
 // Zod schema for image upload form validation
 export const ImageUploadFormSchema = z.object({
-  siteId: z.string().min(1, "Site ID is required"),
+  siteName: z.string().min(1, "Site name is required"),
   postSlug: z.string().min(1, "Post slug is required"),
 });
 

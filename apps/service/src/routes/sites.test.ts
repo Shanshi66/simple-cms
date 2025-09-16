@@ -12,7 +12,7 @@ import { errorHandler } from "@/error";
 function createTestSite(overrides = {}) {
   return {
     id: crypto.randomUUID(),
-    name: `Test Site ${crypto.randomUUID().substring(0, 8)}`, // Unique name
+    name: `test-site-${crypto.randomUUID().substring(0, 8)}`, // Unique name
     description: "Test site description",
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -31,7 +31,7 @@ describe("Sites API", () => {
   describe("POST /sites", () => {
     it("should create a new site successfully", async () => {
       const siteData = {
-        name: "Test Site",
+        name: "test-site",
         description: "A test site",
       };
 
@@ -69,7 +69,7 @@ describe("Sites API", () => {
 
     it("should create a site without description", async () => {
       const siteData = {
-        name: "Test Site Without Description",
+        name: "test-site-without-description",
       };
 
       const res = await app.request(
@@ -182,7 +182,7 @@ describe("Sites API", () => {
 
     it("should return authentication error for missing admin key", async () => {
       const siteData = {
-        name: "Test Site",
+        name: "test-site-auth",
         description: "A test site",
       };
 
@@ -212,7 +212,7 @@ describe("Sites API", () => {
 
     it("should return authentication error for invalid admin key", async () => {
       const siteData = {
-        name: "Test Site",
+        name: "test-site-invalid",
         description: "A test site",
       };
 
