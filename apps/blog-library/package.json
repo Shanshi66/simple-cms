@@ -5,6 +5,8 @@
   "scripts": {
     "imgUpload": "tsx scripts/imgUpload.ts",
     "blogUpload": "tsx scripts/blogUpload.ts",
+    "createSite": "tsx scripts/createSite.ts",
+    "createSiteKey": "tsx scripts/createSiteKey.ts",
     "build": "tsc -b",
     "test": "vitest",
     "check-types": "tsc --noEmit"
