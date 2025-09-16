@@ -63,19 +63,19 @@
 
 **Task**
 
-- [ ] 实现 createSiteKey CLI 脚本
-  - [ ] 4.1 创建 createSiteKey.ts 脚本文件，添加 shebang 和基本导入
-  - [ ] 4.2 创建 SiteKeyCreator 类，包含环境变量加载方法
-  - [ ] 4.3 实现 loadConfig 私有方法，从环境变量读取配置信息
-  - [ ] 4.4 实现 createSiteKey 公有方法，接受站点名称、密钥名称和过期时间参数
-  - [ ] 4.5 验证站点名称格式和过期时间格式（ISO 8601）
-  - [ ] 4.6 调用 APIClient.createSiteApiKey 方法并处理响应
-  - [ ] 4.7 安全地显示生成的 API 密钥（仅显示一次）
-  - [ ] 4.8 实现错误处理方法，包含站点不存在等业务错误的处理
-  - [ ] 4.9 使用 Commander.js 设置 CLI 接口，支持 `<site-name> <key-name> [expires-at]` 参数
-  - [ ] 4.10 添加表情符号和颜色的日志输出
-  - [ ] 4.11 为 SiteKeyCreator 类编写单元测试，覆盖成功创建、验证错误、站点不存在等场景
-  - [ ] 4.12 为 CLI 参数处理和过期时间验证编写单元测试
+- [x] 实现 createSiteKey CLI 脚本
+  - [x] 4.1 创建 createSiteKey.ts 脚本文件，添加 shebang 和基本导入
+  - [x] 4.2 创建 SiteKeyCreator 类，包含环境变量加载方法
+  - [x] 4.3 实现 loadConfig 私有方法，从环境变量读取配置信息
+  - [x] 4.4 实现 createSiteKey 公有方法，接受站点名称、密钥名称和过期时间参数
+  - [x] 4.5 验证站点名称格式和过期时间格式（ISO 8601）
+  - [x] 4.6 调用 APIClient.createSiteApiKey 方法并处理响应
+  - [x] 4.7 安全地显示生成的 API 密钥（仅显示一次）
+  - [x] 4.8 实现错误处理方法，包含站点不存在等业务错误的处理
+  - [x] 4.9 使用 Commander.js 设置 CLI 接口，支持 `<site-name> <key-name> [expires-at]` 参数
+  - [x] 4.10 添加表情符号和颜色的日志输出
+  - [x] 4.11 为 SiteKeyCreator 类编写单元测试，覆盖成功创建、验证错误、站点不存在等场景
+  - [x] 4.12 为 CLI 参数处理和过期时间验证编写单元测试
 
 **Files**
 
