@@ -32,5 +32,10 @@
   "packageManager": "pnpm@10.15.0",
   "engines": {
     "node": ">=18"
+  },
+  "pnpm": {
+    "overrides": {
+      "estree-walker": "2.0.2"
+    }
   }
 }
