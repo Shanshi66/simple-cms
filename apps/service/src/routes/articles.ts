@@ -227,40 +227,67 @@ router.post(
       )
       .get();
 
-    if (existingArticle) {
-      throw new CustomHttpException(ErrorCode.ARTICLE_EXISTS, {
-        message: "An article with this slug already exists for this language",
-      });
-    }
-
-    // Generate article ID
-    const articleId = crypto.randomUUID();
     const now = new Date();
+    let articleId: string;
+    let message: string;
 
-    // Insert article metadata
-    await db.insert(articlesMetadata).values({
-      id: articleId,
-      siteId,
-      language,
-      slug,
-      title,
-      excerpt,
-      date,
-      status,
-      createdAt: now,
-      updatedAt: now,
-    });
+    if (existingArticle) {
+      // Update existing article
+      articleId = existingArticle.id;
 
-    // Insert article content
-    await db.insert(articlesContent).values({
-      articleId,
-      content,
-      updatedAt: now,
-    });
+      // Update article metadata
+      await db
+        .update(articlesMetadata)
+        .set({
+          title,
+          excerpt,
+          date,
+          status,
+          updatedAt: now,
+        })
+        .where(eq(articlesMetadata.id, articleId));
+
+      // Update article content
+      await db
+        .update(articlesContent)
+        .set({
+          content,
+          updatedAt: now,
+        })
+        .where(eq(articlesContent.articleId, articleId));
+
+      message = "Article updated successfully";
+    } else {
+      // Create new article
+      articleId = crypto.randomUUID();
+
+      // Insert article metadata
+      await db.insert(articlesMetadata).values({
+        id: articleId,
+        siteId,
+        language,
+        slug,
+        title,
+        excerpt,
+        date,
+        status,
+        createdAt: now,
+        updatedAt: now,
+      });
+
+      // Insert article content
+      await db.insert(articlesContent).values({
+        articleId,
+        content,
+        updatedAt: now,
+      });
+
+      message = "Article created successfully";
+    }
 
     const response: CreateArticleResponse = {
       id: articleId,
-      message: "Article created successfully",
+      message,
     };
 
     return c.json(createSuccessResponse(response), 201);

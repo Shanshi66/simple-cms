@@ -233,7 +233,7 @@ describe("Articles Routes", () => {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${testApiKey}`,
+            Authorization: `Bearer ${env.ADMIN_API_KEY}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(validArticleData),
@@ -247,7 +247,7 @@ describe("Articles Routes", () => {
       expect(responseBody).toHaveProperty("data");
     });
 
-    it("should return 409 for duplicate slug", async () => {
+    it("should update existing article when slug already exists", async () => {
       // Insert an existing article with the same slug using factory
       const existingArticle = createTestArticle(testSiteId, {
         slug: "test-article", // Same slug as in validArticleData
@@ -257,13 +257,21 @@ describe("Articles Routes", () => {
         status: ArticleStatus.PUBLISHED,
       });
       await db.insert(articlesMetadata).values(existingArticle).run();
+      await db
+        .insert(articlesContent)
+        .values({
+          articleId: existingArticle.id,
+          content: "Original content",
+          updatedAt: new Date(),
+        })
+        .run();
 
       const res = await app.request(
         `/sites/${testSiteName}/articles`,
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${testApiKey}`,
+            Authorization: `Bearer ${env.ADMIN_API_KEY}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(validArticleData),
@@ -271,14 +279,10 @@ describe("Articles Routes", () => {
         env,
       );
 
-      expect(res.status).toBe(409);
+      expect(res.status).toBe(201);
       const responseBody = await res.json();
-      expect(responseBody).toHaveProperty("success", false);
-      expect(responseBody).toHaveProperty("error");
-      expect(responseBody).toHaveProperty(
-        "error.code",
-        ErrorCode.ARTICLE_EXISTS,
-      );
+      expect(responseBody).toHaveProperty("success", true);
+      expect(responseBody).toHaveProperty("data");
     });
 
     it("should validate required fields", async () => {
@@ -296,7 +300,7 @@ describe("Articles Routes", () => {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${testApiKey}`,
+            Authorization: `Bearer ${env.ADMIN_API_KEY}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(invalidData),
@@ -359,23 +363,31 @@ describe("Articles Routes", () => {
       );
     });
 
-    it("should return ARTICLE_EXISTS error code for duplicate slugs", async () => {
+    it("should update article successfully when slug already exists", async () => {
       // Insert existing article directly using factory for faster setup
       const existingArticle = createTestArticle(testSiteId, {
         slug: "duplicate-test",
         title: "Existing Article",
       });
       await db.insert(articlesMetadata).values(existingArticle).run();
+      await db
+        .insert(articlesContent)
+        .values({
+          articleId: existingArticle.id,
+          content: "Original content",
+          updatedAt: new Date(),
+        })
+        .run();
 
-      // Try to create another article with the same slug via API
+      // Try to create another article with the same slug via API - should update existing
       const duplicateArticle = {
         language: Language.EN,
         slug: "duplicate-test", // Same slug
-        title: "Duplicate Article",
-        excerpt: "Test excerpt",
+        title: "Updated Article",
+        excerpt: "Updated excerpt",
         date: "2025-09-06",
         status: ArticleStatus.PUBLISHED,
-        content: "Test content",
+        content: "Updated content",
       };
 
       const res = await app.request(
@@ -383,7 +395,7 @@ describe("Articles Routes", () => {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${testApiKey}`,
+            Authorization: `Bearer ${env.ADMIN_API_KEY}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(duplicateArticle),
@@ -391,14 +403,10 @@ describe("Articles Routes", () => {
         env,
       );
 
-      expect(res.status).toBe(409);
+      expect(res.status).toBe(201);
       const responseBody = await res.json();
-      expect(responseBody).toHaveProperty("success", false);
-      expect(responseBody).toHaveProperty("error");
-      expect(responseBody).toHaveProperty(
-        "error.code",
-        ErrorCode.ARTICLE_EXISTS,
-      );
+      expect(responseBody).toHaveProperty("success", true);
+      expect(responseBody).toHaveProperty("data");
     });
   });
 });
