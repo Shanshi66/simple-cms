@@ -41,18 +41,18 @@
 
 **Task**
 
-- [ ] 实现 createSite CLI 脚本
-  - [ ] 3.1 创建 createSite.ts 脚本文件，添加 shebang 和基本导入
-  - [ ] 3.2 创建 SiteCreator 类，包含环境变量加载方法
-  - [ ] 3.3 实现 loadConfig 私有方法，从环境变量读取 CMS_BASE_URL 和 ADMIN_API_KEY
-  - [ ] 3.4 实现 createSite 公有方法，接受站点名称和描述参数
-  - [ ] 3.5 在 createSite 方法中验证站点名称格式（只能包含字母和'-'）
-  - [ ] 3.6 调用 APIClient.createSite 方法并处理响应
-  - [ ] 3.7 实现错误处理方法，提供用户友好的错误信息和故障排除提示
-  - [ ] 3.8 使用 Commander.js 设置 CLI 接口，支持 `<site-name> [description]` 参数
-  - [ ] 3.9 添加表情符号和颜色的日志输出，保持与现有脚本风格一致
-  - [ ] 3.10 为 SiteCreator 类编写单元测试，覆盖成功创建、验证错误、API 错误等场景
-  - [ ] 3.11 为 CLI 参数处理编写单元测试
+- [x] 实现 createSite CLI 脚本
+  - [x] 3.1 创建 createSite.ts 脚本文件，添加 shebang 和基本导入
+  - [x] 3.2 创建 SiteCreator 类，包含环境变量加载方法
+  - [x] 3.3 实现 loadConfig 私有方法，从环境变量读取 CMS_BASE_URL 和 ADMIN_API_KEY
+  - [x] 3.4 实现 createSite 公有方法，接受站点名称和描述参数
+  - [x] 3.5 在 createSite 方法中验证站点名称格式（只能包含字母和'-'）
+  - [x] 3.6 调用 APIClient.createSite 方法并处理响应
+  - [x] 3.7 实现错误处理方法，提供用户友好的错误信息和故障排除提示
+  - [x] 3.8 使用 Commander.js 设置 CLI 接口，支持 `<site-name> [description]` 参数
+  - [x] 3.9 添加表情符号和颜色的日志输出，保持与现有脚本风格一致
+  - [x] 3.10 为 SiteCreator 类编写单元测试，覆盖成功创建、验证错误、API 错误等场景
+  - [x] 3.11 为 CLI 参数处理编写单元测试
 
 **Files**
 
