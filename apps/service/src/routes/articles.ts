@@ -205,22 +205,14 @@ router.post(
   zValidator("param", siteNameParamSchema),
   zValidator("json", createArticleSchema),
   async (c) => {
-    const { name } = c.req.valid("param");
     const { language, slug, title, excerpt, date, status, content } =
       c.req.valid("json");
-    const siteName = c.var.siteName;
-
-    // Verify URL site name parameter matches authenticated site
-    if (name !== siteName) {
-      throw new CustomHttpException(ErrorCode.INSUFFICIENT_PERMISSIONS, {
-        message: "Access denied: insufficient permissions for this site",
-      });
-    }
+    const { name } = c.req.valid("param");
 
     const db = createDb(c.env.DB);
 
     // Get site ID from site name for database queries
-    const siteId = await getSiteIdFromName(db, siteName);
+    const siteId = await getSiteIdFromName(db, name);
 
     // Check if article with same slug already exists
     const existingArticle = await db
