@@ -5,6 +5,14 @@ import {
   CreateArticleResponse,
   CreateArticleRequestSchema,
   CreateArticleResponseSchema,
+  CreateSiteRequest,
+  CreateSiteResponse,
+  CreateSiteRequestSchema,
+  CreateSiteResponseSchema,
+  CreateApiKeyRequest,
+  CreateApiKeyResponse,
+  CreateApiKeyRequestSchema,
+  CreateApiKeyResponseSchema,
 } from "@repo/types/api";
 
 export class APIClient {
@@ -61,6 +69,101 @@ export class APIClient {
     if (responseData.success) {
       // Validate response structure using schema
       const validatedResponse = CreateArticleResponseSchema.parse(
+        responseData.data,
+      );
+      return validatedResponse;
+    } else {
+      // Handle error response with simple error message
+      throw new Error(responseData.error.message || "API request failed");
+    }
+  }
+
+  /**
+   * Create a new site
+   */
+  async createSite(siteData: CreateSiteRequest): Promise<CreateSiteResponse> {
+    // Validate request data using Zod schema
+    const validatedData = CreateSiteRequestSchema.parse(siteData);
+
+    const url = `${this.baseURL}/sites`;
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${this.apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(validatedData),
+    };
+
+    const response = await fetch(url, requestOptions);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        `API request failed (${response.status}): ${
+          errorText || response.statusText
+        }`,
+      );
+    }
+
+    const responseData =
+      (await response.json()) as ApiResponse<CreateSiteResponse>;
+
+    // Check if response indicates success
+    if (responseData.success) {
+      // Validate response structure using schema
+      const validatedResponse = CreateSiteResponseSchema.parse(
+        responseData.data,
+      );
+      return validatedResponse;
+    } else {
+      // Handle error response with simple error message
+      throw new Error(responseData.error.message || "API request failed");
+    }
+  }
+
+  /**
+   * Create an API key for a specific site
+   */
+  async createSiteApiKey(
+    siteName: string,
+    keyData: CreateApiKeyRequest,
+  ): Promise<CreateApiKeyResponse> {
+    if (!siteName) {
+      throw new Error("Site name is required");
+    }
+
+    // Validate request data using Zod schema
+    const validatedData = CreateApiKeyRequestSchema.parse(keyData);
+
+    const url = `${this.baseURL}/sites/${siteName}/api-keys`;
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${this.apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(validatedData),
+    };
+
+    const response = await fetch(url, requestOptions);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        `API request failed (${response.status}): ${
+          errorText || response.statusText
+        }`,
+      );
+    }
+
+    const responseData =
+      (await response.json()) as ApiResponse<CreateApiKeyResponse>;
+
+    // Check if response indicates success
+    if (responseData.success) {
+      // Validate response structure using schema
+      const validatedResponse = CreateApiKeyResponseSchema.parse(
         responseData.data,
       );
       return validatedResponse;
