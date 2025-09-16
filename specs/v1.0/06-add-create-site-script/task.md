@@ -22,15 +22,15 @@
 
 **Task**
 
-- [ ] 扩展 APIClient 类支持站点管理功能
-  - [ ] 2.1 在 APIClient 类中添加 createSite 方法，接受 CreateSiteRequest 参数
-  - [ ] 2.2 在 createSite 方法中实现 POST /sites API 调用，包含 Bearer 认证
-  - [ ] 2.3 添加请求数据的 Zod 验证和响应数据的验证
-  - [ ] 2.4 在 APIClient 类中添加 createSiteApiKey 方法，接受站点名称和 CreateApiKeyRequest 参数
-  - [ ] 2.5 在 createSiteApiKey 方法中实现 POST /sites/{name}/api-keys API 调用
-  - [ ] 2.6 添加统一的错误处理，解析 API 错误响应格式
-  - [ ] 2.7 为 createSite 方法编写单元测试，覆盖成功和失败场景
-  - [ ] 2.8 为 createSiteApiKey 方法编写单元测试，覆盖成功和失败场景
+- [x] 扩展 APIClient 类支持站点管理功能
+  - [x] 2.1 在 APIClient 类中添加 createSite 方法，接受 CreateSiteRequest 参数
+  - [x] 2.2 在 createSite 方法中实现 POST /sites API 调用，包含 Bearer 认证
+  - [x] 2.3 添加请求数据的 Zod 验证和响应数据的验证
+  - [x] 2.4 在 APIClient 类中添加 createSiteApiKey 方法，接受站点名称和 CreateApiKeyRequest 参数
+  - [x] 2.5 在 createSiteApiKey 方法中实现 POST /sites/{name}/api-keys API 调用
+  - [x] 2.6 添加统一的错误处理，解析 API 错误响应格式
+  - [x] 2.7 为 createSite 方法编写单元测试，覆盖成功和失败场景
+  - [x] 2.8 为 createSiteApiKey 方法编写单元测试，覆盖成功和失败场景
 
 **Files**
 
