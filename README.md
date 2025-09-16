@@ -22,6 +22,11 @@
 
 ### 写博客
 
+可直接在本地用 mdx 写博客，在本地完成验证并上传，具体步骤如下：
+
+1. 将 `sample-content` 目录重命名为 `content`，`content`目录下每个子目录是一个网站，每个网站下的子目录是多语言
+2. 在
+
 ## 开发
 
 做这个项目的起因是我想在 Cloudflare Worker 上用 React Router 部署一个 SSR 网站，因为 Cloudflare Worker 是 Edge环境，不支持 fs，导致很多文档系统都不支持。在调研了许多 cms 系统之后发现都有点复杂，因此有了自己开发一个简化版的想法。

@@ -86,10 +86,10 @@
 
 **Task**
 
-- [ ] 更新 package.json 添加新的 npm 脚本命令
-  - [ ] 5.1 在 apps/blog-library/package.json 的 scripts 部分添加 "createSite": "tsx scripts/createSite.ts"
-  - [ ] 5.2 在 scripts 部分添加 "createSiteKey": "tsx scripts/createSiteKey.ts"
-  - [ ] 5.3 验证新脚本命令的格式与现有脚本保持一致
+- [x] 更新 package.json 添加新的 npm 脚本命令
+  - [x] 5.1 在 apps/blog-library/package.json 的 scripts 部分添加 "createSite": "tsx scripts/createSite.ts"
+  - [x] 5.2 在 scripts 部分添加 "createSiteKey": "tsx scripts/createSiteKey.ts"
+  - [x] 5.3 验证新脚本命令的格式与现有脚本保持一致
 
 **Files**
 
