@@ -29,7 +29,7 @@ describe("API Keys API", () => {
     await db.delete(sites);
   });
 
-  describe("POST /sites/{siteId}/api-keys", () => {
+  describe("POST /sites/{name}/api-keys", () => {
     it("should create a new API key successfully", async () => {
       // First, create a test site
       const db = createDb(env.DB);
@@ -42,7 +42,7 @@ describe("API Keys API", () => {
       };
 
       const res = await app.request(
-        `/sites/${testSite.id}/api-keys`,
+        `/sites/${testSite.name}/api-keys`,
         {
           method: "POST",
           headers: {
@@ -84,7 +84,7 @@ describe("API Keys API", () => {
       };
 
       const res = await app.request(
-        `/sites/${testSite.id}/api-keys`,
+        `/sites/${testSite.name}/api-keys`,
         {
           method: "POST",
           headers: {
@@ -107,14 +107,14 @@ describe("API Keys API", () => {
     });
 
     it("should return site not found error for non-existent site", async () => {
-      const nonExistentSiteId = crypto.randomUUID();
+      const nonExistentSiteName = "non-existent-site-name";
       const apiKeyData = {
         name: "Test API Key",
         expiresAt: "2024-12-31T23:59:59.000Z",
       };
 
       const res = await app.request(
-        `/sites/${nonExistentSiteId}/api-keys`,
+        `/sites/${nonExistentSiteName}/api-keys`,
         {
           method: "POST",
           headers: {
@@ -149,7 +149,7 @@ describe("API Keys API", () => {
       };
 
       const res = await app.request(
-        `/sites/${testSite.id}/api-keys`,
+        `/sites/${testSite.name}/api-keys`,
         {
           method: "POST",
           headers: {
@@ -179,7 +179,7 @@ describe("API Keys API", () => {
       };
 
       const res = await app.request(
-        `/sites/${testSite.id}/api-keys`,
+        `/sites/${testSite.name}/api-keys`,
         {
           method: "POST",
           headers: {
@@ -209,7 +209,7 @@ describe("API Keys API", () => {
       };
 
       const res = await app.request(
-        `/sites/${testSite.id}/api-keys`,
+        `/sites/${testSite.name}/api-keys`,
         {
           method: "POST",
           headers: {
@@ -227,13 +227,13 @@ describe("API Keys API", () => {
       expect(responseData).toHaveProperty("error");
     });
 
-    it("should return validation error for missing site ID", async () => {
+    it("should return validation error for missing site name", async () => {
       const apiKeyData = {
         name: "Test API Key",
       };
 
       const res = await app.request(
-        `/sites//api-keys`, // Empty siteId
+        `/sites//api-keys`, // Empty site name
         {
           method: "POST",
           headers: {
@@ -249,13 +249,13 @@ describe("API Keys API", () => {
     });
 
     it("should return authentication error for missing admin key", async () => {
-      const testSiteId = crypto.randomUUID();
+      const testSiteName = "test-site";
       const apiKeyData = {
         name: "Test API Key",
       };
 
       const res = await app.request(
-        `/sites/${testSiteId}/api-keys`,
+        `/sites/${testSiteName}/api-keys`,
         {
           method: "POST",
           headers: {
@@ -279,13 +279,13 @@ describe("API Keys API", () => {
     });
 
     it("should return authentication error for invalid admin key", async () => {
-      const testSiteId = crypto.randomUUID();
+      const testSiteName = "test-site";
       const apiKeyData = {
         name: "Test API Key",
       };
 
       const res = await app.request(
-        `/sites/${testSiteId}/api-keys`,
+        `/sites/${testSiteName}/api-keys`,
         {
           method: "POST",
           headers: {
@@ -320,7 +320,7 @@ describe("API Keys API", () => {
 
       // Create first API key
       const res1 = await app.request(
-        `/sites/${testSite.id}/api-keys`,
+        `/sites/${testSite.name}/api-keys`,
         {
           method: "POST",
           headers: {
@@ -334,7 +334,7 @@ describe("API Keys API", () => {
 
       // Create second API key
       const res2 = await app.request(
-        `/sites/${testSite.id}/api-keys`,
+        `/sites/${testSite.name}/api-keys`,
         {
           method: "POST",
           headers: {

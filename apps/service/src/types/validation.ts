@@ -20,7 +20,7 @@ export const articleListQuerySchema = z.object({
 
 // Path parameters validation for article detail endpoint
 export const articleDetailParamsSchema = z.object({
-  site: z.string().min(1, "Site is required"),
+  name: z.string().min(1, "Site name is required"),
   lang: z.enum([Language.EN, Language.ZH_CN]),
   slug: z
     .string()
@@ -29,6 +29,11 @@ export const articleDetailParamsSchema = z.object({
       SLUG_REGEX,
       "Slug must contain only lowercase letters, numbers, and hyphens",
     ),
+});
+
+// Path parameters validation for site name in various endpoints
+export const siteNameParamSchema = z.object({
+  name: z.string().min(1, "Site name is required"),
 });
 
 // Path parameters validation for site in article creation
@@ -80,6 +85,7 @@ export const createApiKeySchema = z.object({
 
 export type ArticleListQuery = z.infer<typeof articleListQuerySchema>;
 export type ArticleDetailParams = z.infer<typeof articleDetailParamsSchema>;
+export type SiteNameParam = z.infer<typeof siteNameParamSchema>;
 export type ArticleSiteParam = z.infer<typeof articleSiteParamSchema>;
 export type CreateArticleBody = z.infer<typeof createArticleSchema>;
 export type CreateSiteBody = z.infer<typeof createSiteSchema>;

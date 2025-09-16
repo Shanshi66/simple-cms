@@ -4,14 +4,15 @@ import { eq, and, desc, count } from "drizzle-orm";
 import { ErrorCode } from "@repo/types/error";
 import { CustomHttpException } from "@/error";
 import { createDb } from "@/db";
-import { articlesMetadata, articlesContent } from "@/db/schema/cms";
+import { articlesMetadata, articlesContent, sites } from "@/db/schema/cms";
 import { createSuccessResponse } from "@/lib/utils";
 import { apiAuth } from "@/middleware/auth";
 import { CFBindings, MiddlewareVars } from "@/types/context";
+import { D1DB } from "@/db";
 import {
   articleListQuerySchema,
   articleDetailParamsSchema,
-  articleSiteParamSchema,
+  siteNameParamSchema,
   createArticleSchema,
 } from "@/types/validation";
 import { ArticleStatus } from "@repo/types/api";
@@ -23,27 +24,47 @@ import {
 
 const router = new Hono<{ Bindings: CFBindings; Variables: MiddlewareVars }>();
 
+// Helper function to get site ID from site name
+async function getSiteIdFromName(db: D1DB, siteName: string): Promise<string> {
+  const site = await db
+    .select({ id: sites.id })
+    .from(sites)
+    .where(eq(sites.name, siteName))
+    .get();
+
+  if (!site) {
+    throw new CustomHttpException(ErrorCode.SITE_NOT_FOUND, {
+      message: "Site not found",
+    });
+  }
+
+  return site.id;
+}
+
 // Apply authentication middleware to all routes
 router.use("*", apiAuth());
 
-// GET /sites/{site}/articles - Get articles list with pagination
+// GET /sites/{name}/articles - Get articles list with pagination
 router.get(
-  "/sites/:site/articles",
-  zValidator("param", articleSiteParamSchema),
+  "/sites/:name/articles",
+  zValidator("param", siteNameParamSchema),
   zValidator("query", articleListQuerySchema),
   async (c) => {
-    const { site } = c.req.valid("param");
+    const { name } = c.req.valid("param");
     const { lang, status, page, limit } = c.req.valid("query");
-    const siteId = c.var.siteId;
+    const siteName = c.var.siteName;
 
-    // Verify URL site parameter matches authenticated site
-    if (site !== siteId) {
+    // Verify URL site name parameter matches authenticated site
+    if (name !== siteName) {
       throw new CustomHttpException(ErrorCode.INSUFFICIENT_PERMISSIONS, {
         message: "Access denied: insufficient permissions for this site",
       });
     }
 
     const db = createDb(c.env.DB);
+
+    // Get site ID from site name for database queries
+    const siteId = await getSiteIdFromName(db, siteName);
 
     // Build query conditions
     const conditions = [eq(articlesMetadata.siteId, siteId)];
@@ -108,22 +129,25 @@ router.get(
   },
 );
 
-// GET /sites/{site}/articles/{lang}/{slug} - Get article detail
+// GET /sites/{name}/articles/{lang}/{slug} - Get article detail
 router.get(
-  "/sites/:site/articles/:lang/:slug",
+  "/sites/:name/articles/:lang/:slug",
   zValidator("param", articleDetailParamsSchema),
   async (c) => {
-    const { site, lang, slug } = c.req.valid("param");
-    const siteId = c.var.siteId;
+    const { name, lang, slug } = c.req.valid("param");
+    const siteName = c.var.siteName;
 
-    // Verify URL site parameter matches authenticated site
-    if (site !== siteId) {
+    // Verify URL site name parameter matches authenticated site
+    if (name !== siteName) {
       throw new CustomHttpException(ErrorCode.INSUFFICIENT_PERMISSIONS, {
         message: "Access denied: insufficient permissions for this site",
       });
     }
 
     const db = createDb(c.env.DB);
+
+    // Get site ID from site name for database queries
+    const siteId = await getSiteIdFromName(db, siteName);
 
     // First, get article metadata
     const articleMeta = await db
@@ -174,25 +198,28 @@ router.get(
   },
 );
 
-// POST /sites/{site}/articles - Create new article
+// POST /sites/{name}/articles - Create new article
 router.post(
-  "/sites/:site/articles",
-  zValidator("param", articleSiteParamSchema),
+  "/sites/:name/articles",
+  zValidator("param", siteNameParamSchema),
   zValidator("json", createArticleSchema),
   async (c) => {
-    const { site } = c.req.valid("param");
+    const { name } = c.req.valid("param");
     const { language, slug, title, excerpt, date, status, content } =
       c.req.valid("json");
-    const siteId = c.var.siteId;
+    const siteName = c.var.siteName;
 
-    // Verify URL site parameter matches authenticated site
-    if (site !== siteId) {
+    // Verify URL site name parameter matches authenticated site
+    if (name !== siteName) {
       throw new CustomHttpException(ErrorCode.INSUFFICIENT_PERMISSIONS, {
         message: "Access denied: insufficient permissions for this site",
       });
     }
 
     const db = createDb(c.env.DB);
+
+    // Get site ID from site name for database queries
+    const siteId = await getSiteIdFromName(db, siteName);
 
     // Check if article with same slug already exists
     const existingArticle = await db

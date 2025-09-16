@@ -3,13 +3,13 @@ import { eq } from "drizzle-orm";
 import { ErrorCode } from "@repo/types/error";
 import { CustomHttpException } from "@/error";
 import { createDb } from "@/db";
-import { apiKeys } from "@/db/schema/cms";
+import { apiKeys, sites } from "@/db/schema/cms";
 import { hashApiKey, isApiKeyExpired } from "@/lib/crypto";
 import { CFBindings, MiddlewareVars } from "@/types/context";
 
 /**
- * Middleware to authenticate API keys via Bearer token and populate site ID in context
- * Extracts and validates the API key from Authorization header, then sets siteId in context
+ * Middleware to authenticate API keys via Bearer token and populate site name in context
+ * Extracts and validates the API key from Authorization header, then sets siteName in context
  */
 export function apiAuth(): MiddlewareHandler<{
   Bindings: CFBindings;
@@ -67,8 +67,22 @@ export function apiAuth(): MiddlewareHandler<{
         message: "API key has expired",
       });
     }
-    // Store the site ID in context for route handlers
-    c.set("siteId", matchedApiKey.siteId);
+
+    // Query site name using the site ID from the API key
+    const site = await db
+      .select({ name: sites.name })
+      .from(sites)
+      .where(eq(sites.id, matchedApiKey.siteId))
+      .get();
+
+    if (!site) {
+      throw new CustomHttpException(ErrorCode.INVALID_API_KEY, {
+        message: "Site not found for the provided API key",
+      });
+    }
+
+    // Store the site name in context for route handlers
+    c.set("siteName", site.name);
 
     await next();
   };

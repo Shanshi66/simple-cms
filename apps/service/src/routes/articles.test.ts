@@ -18,7 +18,7 @@ import { errorHandler } from "@/error";
 function createTestSite() {
   return {
     id: crypto.randomUUID(),
-    name: "Test Site",
+    name: "test-site",
     description: "Test site description",
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -69,6 +69,7 @@ describe("Articles Routes", () => {
   let testApiKey: string;
   let testApiKeyHash: string;
   let testSiteId: string;
+  let testSiteName: string;
   let db: D1DB;
 
   beforeEach(async () => {
@@ -76,6 +77,7 @@ describe("Articles Routes", () => {
     testApiKey = generateApiKey();
     testApiKeyHash = await hashApiKey(testApiKey);
     testSiteId = crypto.randomUUID();
+    testSiteName = "test-site";
 
     db = createDb(env.DB);
     app.onError(errorHandler);
@@ -87,14 +89,18 @@ describe("Articles Routes", () => {
     await db.delete(sites).run();
 
     // Setup test data using factories
-    const testSite = { ...createTestSite(), id: testSiteId };
+    const testSite = {
+      ...createTestSite(),
+      id: testSiteId,
+      name: testSiteName,
+    };
     await db.insert(sites).values(testSite).run();
 
     const testKey = createTestApiKey(testSiteId, testApiKeyHash);
     await db.insert(apiKeys).values(testKey).run();
   });
 
-  describe("GET /sites/:site/articles", () => {
+  describe("GET /sites/:name/articles", () => {
     it("should return paginated articles list", async () => {
       // Insert test article using factory
       const testArticle = createTestArticle(testSiteId, {
@@ -105,7 +111,7 @@ describe("Articles Routes", () => {
       await db.insert(articlesMetadata).values(testArticle).run();
 
       const res = await app.request(
-        `/sites/${testSiteId}/articles`,
+        `/sites/${testSiteName}/articles`,
         {
           method: "GET",
           headers: {
@@ -123,7 +129,7 @@ describe("Articles Routes", () => {
     });
 
     it("should return 401 without authorization header", async () => {
-      const res = await app.request("/sites/test-site/articles", {}, env);
+      const res = await app.request(`/sites/${testSiteName}/articles`, {}, env);
 
       expect(res.status).toBe(401);
     });
@@ -144,11 +150,11 @@ describe("Articles Routes", () => {
     });
 
     it("should return 403 for non-existent site", async () => {
-      // Use a non-existent site ID - this should return 403 for security reasons
-      const nonExistentSiteId = "non-existent-site";
+      // Use a non-existent site name - this should return 403 for security reasons
+      const nonExistentSiteName = "non-existent-site";
 
       const res = await app.request(
-        `/sites/${nonExistentSiteId}/articles`,
+        `/sites/${nonExistentSiteName}/articles`,
         {
           method: "GET",
           headers: {
@@ -162,7 +168,7 @@ describe("Articles Routes", () => {
     });
   });
 
-  describe("GET /sites/:site/articles/:lang/:slug", () => {
+  describe("GET /sites/:name/articles/:lang/:slug", () => {
     it("should return article detail with content", async () => {
       // Insert test article with content using factory
       const testArticle = createTestArticle(testSiteId);
@@ -178,7 +184,7 @@ describe("Articles Routes", () => {
         .run();
 
       const res = await app.request(
-        `/sites/${testSiteId}/articles/en/test-article`,
+        `/sites/${testSiteName}/articles/en/test-article`,
         {
           method: "GET",
           headers: {
@@ -195,7 +201,7 @@ describe("Articles Routes", () => {
       // Don't insert any article - test will use non-existent slug
 
       const res = await app.request(
-        `/sites/${testSiteId}/articles/en/non-existent`,
+        `/sites/${testSiteName}/articles/en/non-existent`,
         {
           method: "GET",
           headers: {
@@ -208,7 +214,7 @@ describe("Articles Routes", () => {
     });
   });
 
-  describe("POST /sites/:site/articles", () => {
+  describe("POST /sites/:name/articles", () => {
     const validArticleData = {
       language: Language.EN,
       slug: "test-article",
@@ -223,7 +229,7 @@ describe("Articles Routes", () => {
       // No need to prepare data - the test will create a new article
 
       const res = await app.request(
-        `/sites/${testSiteId}/articles`,
+        `/sites/${testSiteName}/articles`,
         {
           method: "POST",
           headers: {
@@ -253,7 +259,7 @@ describe("Articles Routes", () => {
       await db.insert(articlesMetadata).values(existingArticle).run();
 
       const res = await app.request(
-        `/sites/${testSiteId}/articles`,
+        `/sites/${testSiteName}/articles`,
         {
           method: "POST",
           headers: {
@@ -286,7 +292,7 @@ describe("Articles Routes", () => {
       };
 
       const res = await app.request(
-        `/sites/${testSiteId}/articles`,
+        `/sites/${testSiteName}/articles`,
         {
           method: "POST",
           headers: {
@@ -308,9 +314,9 @@ describe("Articles Routes", () => {
   describe("Authentication", () => {
     it("should require valid API key for all endpoints", async () => {
       const endpoints = [
-        { method: "GET", path: `/sites/${testSiteId}/articles` },
-        { method: "GET", path: `/sites/${testSiteId}/articles/en/test` },
-        { method: "POST", path: `/sites/${testSiteId}/articles` },
+        { method: "GET", path: `/sites/${testSiteName}/articles` },
+        { method: "GET", path: `/sites/${testSiteName}/articles/en/test` },
+        { method: "POST", path: `/sites/${testSiteName}/articles` },
       ];
 
       for (const endpoint of endpoints) {
@@ -333,7 +339,7 @@ describe("Articles Routes", () => {
   describe("CMS Error Codes", () => {
     it("should return ARTICLE_NOT_FOUND error code for missing articles", async () => {
       const res = await app.request(
-        `/sites/${testSiteId}/articles/en/missing-article`,
+        `/sites/${testSiteName}/articles/en/missing-article`,
         {
           method: "GET",
           headers: {
@@ -373,7 +379,7 @@ describe("Articles Routes", () => {
       };
 
       const res = await app.request(
-        `/sites/${testSiteId}/articles`,
+        `/sites/${testSiteName}/articles`,
         {
           method: "POST",
           headers: {

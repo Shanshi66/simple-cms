@@ -9,20 +9,20 @@ import { createSuccessResponse } from "@/lib/utils";
 import { generateApiKey, hashApiKey } from "@/lib/crypto";
 import { adminAuth } from "@/middleware/admin-auth";
 import { CFBindings, MiddlewareVars } from "@/types/context";
-import { createApiKeySchema, siteIdParamSchema } from "@/types/validation";
+import { createApiKeySchema, siteNameParamSchema } from "@/types/validation";
 
 const router = new Hono<{ Bindings: CFBindings; Variables: MiddlewareVars }>();
 
 // Apply admin authentication middleware to all routes
 router.use("*", adminAuth());
 
-// POST /sites/{siteId}/api-keys - Create new API key for a site
+// POST /sites/{name}/api-keys - Create new API key for a site
 router.post(
-  "/sites/:siteId/api-keys",
-  zValidator("param", siteIdParamSchema),
+  "/sites/:name/api-keys",
+  zValidator("param", siteNameParamSchema),
   zValidator("json", createApiKeySchema),
   async (c) => {
-    const { siteId } = c.req.valid("param");
+    const { name: siteName } = c.req.valid("param");
     const { name, expiresAt } = c.req.valid("json");
     const db = createDb(c.env.DB);
 
@@ -30,7 +30,7 @@ router.post(
     const site = await db
       .select({ id: sites.id })
       .from(sites)
-      .where(eq(sites.id, siteId))
+      .where(eq(sites.name, siteName))
       .get();
 
     if (!site) {
@@ -50,7 +50,7 @@ router.post(
 
     await db.insert(apiKeys).values({
       id: apiKeyId,
-      siteId,
+      siteId: site.id,
       keyHash,
       name,
       expiresAt: expirationDate,
@@ -62,7 +62,7 @@ router.post(
       id: apiKeyId,
       apiKey, // Return the actual API key (only shown once)
       name,
-      siteId,
+      siteId: site.id,
       expiresAt: expirationDate?.toISOString() ?? null,
       createdAt: now.toISOString(),
     };
