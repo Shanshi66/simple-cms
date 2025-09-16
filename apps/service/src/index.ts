@@ -12,10 +12,9 @@ const app = new Hono<{ Bindings: CFBindings; Variables: MiddlewareVars }>();
 app.onError(errorHandler);
 
 // Mount routes
-// app.basePath("/api").route("/", auth);
-app.basePath("/api").route("/", articles);
-app.basePath("/api").route("/", image);
-app.basePath("/api").route("/", sites);
-app.basePath("/api").route("/", apiKeys);
+app.route("/", articles);
+app.route("/", image);
+app.route("/", sites);
+app.route("/", apiKeys);
 
 export default app;
