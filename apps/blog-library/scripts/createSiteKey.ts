@@ -4,6 +4,7 @@ import { program } from "commander";
 import { config } from "dotenv";
 import { APIClient } from "@/lib/api-client";
 import { CreateApiKeyRequest } from "@repo/types/api";
+import { loadConfig } from "@/lib/config";
 
 // Load environment variables
 config();
@@ -13,30 +14,11 @@ const STRICT_ISO_DATETIME_REGEX =
   /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
 
 export class SiteKeyCreator {
+  private config: { baseURL: string; apiKey: string };
+
   constructor() {
-    // Initialize SiteKeyCreator
-  }
-
-  /**
-   * Load configuration from environment variables
-   */
-  private loadConfig() {
-    const baseURL = process.env.CMS_BASE_URL;
-    const apiKey = process.env.ADMIN_API_KEY;
-
-    if (!baseURL) {
-      throw new Error(
-        `Missing CMS base URL. Please set CMS_BASE_URL in your .env file`,
-      );
-    }
-
-    if (!apiKey) {
-      throw new Error(
-        `Missing admin API key. Please set ADMIN_API_KEY in your .env file`,
-      );
-    }
-
-    return { baseURL, apiKey };
+    // Load configuration during class initialization
+    this.config = loadConfig();
   }
 
   /**
@@ -101,9 +83,7 @@ export class SiteKeyCreator {
         console.log(`✅ Expiration date validation passed`);
       }
 
-      // Load configuration
-      const config = this.loadConfig();
-      console.log(`⚙️ Loaded configuration`);
+      console.log(`⚙️ Using loaded configuration`);
 
       // Prepare API key data
       const keyData: CreateApiKeyRequest = {
@@ -113,7 +93,7 @@ export class SiteKeyCreator {
 
       // Create API client and create site API key
       console.log(`🌐 Creating API key via API...`);
-      const apiClient = new APIClient(config.baseURL, config.apiKey);
+      const apiClient = new APIClient(this.config.baseURL, this.config.apiKey);
       const response = await apiClient.createSiteApiKey(siteName, keyData);
 
       console.log(`✅ API key created successfully!`);
@@ -200,7 +180,7 @@ export class SiteKeyCreator {
 
   // Test helper methods (only used in testing)
   public testLoadConfig() {
-    return this.loadConfig();
+    return this.config;
   }
 
   public testValidateSiteName(name: string): void {

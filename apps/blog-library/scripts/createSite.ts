@@ -4,35 +4,17 @@ import { program } from "commander";
 import { config } from "dotenv";
 import { APIClient } from "@/lib/api-client";
 import { CreateSiteRequest } from "@repo/types/api";
+import { loadConfig } from "@/lib/config";
 
 // Load environment variables
 config();
 
 export class SiteCreator {
+  private config: { baseURL: string; apiKey: string };
+
   constructor() {
-    // Initialize SiteCreator
-  }
-
-  /**
-   * Load configuration from environment variables
-   */
-  private loadConfig() {
-    const baseURL = process.env.CMS_BASE_URL;
-    const apiKey = process.env.ADMIN_API_KEY;
-
-    if (!baseURL) {
-      throw new Error(
-        `Missing CMS base URL. Please set CMS_BASE_URL in your .env file`,
-      );
-    }
-
-    if (!apiKey) {
-      throw new Error(
-        `Missing admin API key. Please set ADMIN_API_KEY in your .env file`,
-      );
-    }
-
-    return { baseURL, apiKey };
+    // Load configuration during class initialization
+    this.config = loadConfig();
   }
 
   /**
@@ -62,9 +44,7 @@ export class SiteCreator {
       this.validateSiteName(name);
       console.log(`✅ Site name validation passed`);
 
-      // Load configuration
-      const config = this.loadConfig();
-      console.log(`⚙️ Loaded configuration`);
+      console.log(`⚙️ Using loaded configuration`);
 
       // Prepare site data
       const siteData: CreateSiteRequest = {
@@ -74,7 +54,7 @@ export class SiteCreator {
 
       // Create API client and create site
       console.log(`🌐 Creating site via API...`);
-      const apiClient = new APIClient(config.baseURL, config.apiKey);
+      const apiClient = new APIClient(this.config.baseURL, this.config.apiKey);
       const response = await apiClient.createSite(siteData);
 
       console.log(`✅ Site created successfully!`);
@@ -133,7 +113,7 @@ export class SiteCreator {
 
   // Test helper methods (only used in testing)
   public testLoadConfig() {
-    return this.loadConfig();
+    return this.config;
   }
 
   public testValidateSiteName(name: string): void {

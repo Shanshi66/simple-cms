@@ -17,6 +17,7 @@ export default defineWorkersProject(async () => {
       setupFiles: ["./test/apply-migrations.ts"],
       globals: true,
       isolate: true,
+      watch: false,
       poolOptions: {
         workers: {
           singleWorker: true,

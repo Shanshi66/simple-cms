@@ -12,6 +12,7 @@ import type { CreateSiteRequest, CreateSiteResponse } from "@repo/types/api";
 
 // Mock the external dependencies
 vi.mock("../src/lib/api-client.js");
+vi.mock("../src/lib/config.js");
 
 // Mock types for better type safety
 interface MockAPIClient {
@@ -33,6 +34,7 @@ describe("SiteCreator", () => {
 
     // Setup mocks
     const { APIClient } = await import("../src/lib/api-client.js");
+    const { loadConfig } = await import("../src/lib/config.js");
 
     mockAPIClient = {
       createSite: vi.fn(),
@@ -41,6 +43,12 @@ describe("SiteCreator", () => {
     vi.mocked(APIClient).mockImplementation(
       () => mockAPIClient as unknown as InstanceType<typeof APIClient>,
     );
+
+    // Mock loadConfig function
+    vi.mocked(loadConfig).mockReturnValue({
+      baseURL: "https://api.cms.com",
+      apiKey: "test-admin-key",
+    });
 
     creator = new SiteCreator();
   });
@@ -51,35 +59,11 @@ describe("SiteCreator", () => {
   });
 
   describe("loadConfig", () => {
-    it("should load configuration from environment variables", () => {
-      process.env.CMS_BASE_URL = "https://api.cms.com";
-      process.env.ADMIN_API_KEY = "test-admin-key";
-
+    it("should load configuration from shared config module", () => {
       const config = creator.testLoadConfig();
 
       expect(config.baseURL).toBe("https://api.cms.com");
       expect(config.apiKey).toBe("test-admin-key");
-    });
-
-    it("should throw error for missing CMS_BASE_URL", () => {
-      process.env.ADMIN_API_KEY = "test-key";
-      delete process.env.CMS_BASE_URL;
-
-      expect(() => creator.testLoadConfig()).toThrow();
-    });
-
-    it("should throw error for missing ADMIN_API_KEY", () => {
-      process.env.CMS_BASE_URL = "https://api.cms.com";
-      delete process.env.ADMIN_API_KEY;
-
-      expect(() => creator.testLoadConfig()).toThrow();
-    });
-
-    it("should throw error for both missing environment variables", () => {
-      delete process.env.CMS_BASE_URL;
-      delete process.env.ADMIN_API_KEY;
-
-      expect(() => creator.testLoadConfig()).toThrow();
     });
   });
 
@@ -184,20 +168,40 @@ describe("SiteCreator", () => {
     });
 
     it("should handle missing environment variables", async () => {
-      delete process.env.CMS_BASE_URL;
+      const { loadConfig } = await import("../src/lib/config.js");
 
-      await expect(creator.createSite("valid-name")).rejects.toThrow();
+      // Mock loadConfig to throw error for missing environment variables
+      vi.mocked(loadConfig).mockImplementation(() => {
+        throw new Error(
+          "Missing CMS base URL. Please set CMS_BASE_URL in your .env file",
+        );
+      });
+
+      // Create a new instance that will fail during construction due to missing config
+      expect(() => new SiteCreator()).toThrow(
+        "Missing CMS base URL. Please set CMS_BASE_URL in your .env file",
+      );
 
       // Verify that the API client was never called
       expect(mockAPIClient.createSite).not.toHaveBeenCalled();
     });
 
     it("should handle API errors", async () => {
+      // Reset loadConfig mock to return valid config for this test
+      const { loadConfig } = await import("../src/lib/config.js");
+      vi.mocked(loadConfig).mockReturnValue({
+        baseURL: "https://api.cms.com",
+        apiKey: "test-admin-key",
+      });
+
+      // Create a fresh instance for this test
+      const testCreator = new SiteCreator();
+
       mockAPIClient.createSite.mockRejectedValue(
         new Error("API request failed (409): Site already exists"),
       );
 
-      await expect(creator.createSite("existing-site")).rejects.toThrow();
+      await expect(testCreator.createSite("existing-site")).rejects.toThrow();
 
       expect(mockAPIClient.createSite).toHaveBeenCalledWith({
         name: "existing-site",

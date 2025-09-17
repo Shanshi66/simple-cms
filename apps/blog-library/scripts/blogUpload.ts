@@ -9,48 +9,29 @@ import { ValidationError } from "@/lib/validator";
 import { parseFilePath } from "@/lib/path-utils";
 import { CreateArticleRequest } from "@repo/types/api";
 import { SiteConfig } from "@/types/article";
+import { loadConfig } from "@/lib/config";
 
 // Load environment variables
 config();
 
 export class BlogUploader {
   private mdxParser: MDXParser;
+  private config: { baseURL: string; apiKey: string };
 
   constructor() {
     this.mdxParser = new MDXParser();
+    // Load configuration during class initialization
+    this.config = loadConfig();
   }
 
   /**
-   * Load site configuration from environment variables
+   * Load site configuration using stored config
    */
   private loadSiteConfig(siteName: string): SiteConfig {
-    const apiKey = process.env.ADMIN_API_KEY;
-
-    if (!apiKey) {
-      throw new Error(
-        `Missing admin API key. Please set ADMIN_API_KEY in your .env file`,
-      );
-    }
-
     return {
       name: siteName,
-      apiKey,
+      apiKey: this.config.apiKey,
     };
-  }
-
-  /**
-   * Load shared base URL from environment variables
-   */
-  private loadBaseURL(): string {
-    const baseURL = process.env.CMS_BASE_URL;
-
-    if (!baseURL) {
-      throw new Error(
-        `Missing CMS base URL. Please set CMS_BASE_URL in your .env file`,
-      );
-    }
-
-    return baseURL;
   }
 
   /**
@@ -71,10 +52,11 @@ export class BlogUploader {
         throw new Error(`File not found: ${pathInfo.fullPath}`);
       }
 
-      // Load site configuration and base URL
+      // Load site configuration using stored config
       const siteConfig = this.loadSiteConfig(pathInfo.siteName);
-      const baseURL = this.loadBaseURL();
-      console.log(`⚙️  Loaded configuration for site "${pathInfo.siteName}"`);
+      console.log(
+        `⚙️  Using loaded configuration for site "${pathInfo.siteName}"`,
+      );
 
       // Parse MDX file
       console.log(`📖 Parsing MDX file...`);
@@ -108,7 +90,7 @@ export class BlogUploader {
 
       // Create API client and upload article
       console.log(`🚀 Uploading article to API...`);
-      const apiClient = new APIClient(baseURL, siteConfig.apiKey);
+      const apiClient = new APIClient(this.config.baseURL, siteConfig.apiKey);
       const response = await apiClient.createArticle(
         siteConfig.name,
         articleData,
@@ -198,6 +180,10 @@ export class BlogUploader {
 
   public testLoadSiteConfig(siteName: string) {
     return this.loadSiteConfig(siteName);
+  }
+
+  public testLoadConfig() {
+    return this.config;
   }
 
   public testCheckLocalImages(content: string): boolean {

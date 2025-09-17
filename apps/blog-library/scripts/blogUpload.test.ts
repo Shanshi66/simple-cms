@@ -19,6 +19,7 @@ import type {
 // Mock the external dependencies
 vi.mock("../src/lib/mdx-parser.js");
 vi.mock("../src/lib/api-client.js");
+vi.mock("../src/lib/config.js");
 vi.mock("fs-extra", async () => {
   const actual = await vi.importActual("fs-extra");
   return {
@@ -58,6 +59,7 @@ describe("BlogUploader", () => {
     // Setup mocks
     const { MDXParser } = await import("../src/lib/mdx-parser.js");
     const { APIClient } = await import("../src/lib/api-client.js");
+    const { loadConfig } = await import("../src/lib/config.js");
 
     mockMDXParser = {
       parse: vi.fn(),
@@ -72,6 +74,12 @@ describe("BlogUploader", () => {
     vi.mocked(APIClient).mockImplementation(
       () => mockAPIClient as unknown as InstanceType<typeof APIClient>,
     );
+
+    // Mock loadConfig to return default test config
+    vi.mocked(loadConfig).mockReturnValue({
+      baseURL: "https://api.cms.com",
+      apiKey: "e7b13d718403079d32cdeed96a4a6ec7",
+    });
 
     uploader = new BlogUploader();
   });
@@ -127,28 +135,34 @@ describe("BlogUploader", () => {
   });
 
   describe("loadSiteConfig", () => {
-    it("should load site configuration from environment", () => {
-      process.env.ADMIN_API_KEY = "test-admin-key";
-
+    it("should load site configuration from stored config", () => {
       const config = uploader.testLoadSiteConfig("site1");
 
       expect(config.name).toBe("site1");
-      expect(config.apiKey).toBe("test-admin-key");
+      expect(config.apiKey).toBe("e7b13d718403079d32cdeed96a4a6ec7");
     });
 
     it("should handle different case site names", () => {
-      process.env.ADMIN_API_KEY = "admin-key";
-
       const config = uploader.testLoadSiteConfig("mysite");
 
       expect(config.name).toBe("mysite");
-      expect(config.apiKey).toBe("admin-key");
+      expect(config.apiKey).toBe("e7b13d718403079d32cdeed96a4a6ec7");
     });
 
-    it("should throw error for missing API key", () => {
-      delete process.env.ADMIN_API_KEY;
+    it("should throw error for missing API key", async () => {
+      const { loadConfig } = await import("../src/lib/config.js");
 
-      expect(() => uploader.testLoadSiteConfig("site1")).toThrow();
+      // Mock loadConfig to throw error for missing API key
+      vi.mocked(loadConfig).mockImplementation(() => {
+        throw new Error(
+          "Missing admin API key. Please set ADMIN_API_KEY in your .env file",
+        );
+      });
+
+      // Create a new instance that will fail during construction due to missing config
+      expect(() => new BlogUploader()).toThrow(
+        "Missing admin API key. Please set ADMIN_API_KEY in your .env file",
+      );
     });
   });
 

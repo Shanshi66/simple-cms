@@ -9,6 +9,7 @@ export default defineConfig({
   },
   test: {
     globals: true,
+    watch: false,
     environment: "node",
     include: ["**/*.{test,spec}.{js,ts}"],
     exclude: ["node_modules", "dist"],
