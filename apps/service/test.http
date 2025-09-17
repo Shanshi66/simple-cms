@@ -1,0 +1,3 @@
+GET http://localhost:3000/sites/test/articles
+Content-Type: application/json
+Authorization: Bearer sk_nvrYY7xJ_GodzYwlvIwQPYLDip_Z2-mhOQ7CqpZQ02g
