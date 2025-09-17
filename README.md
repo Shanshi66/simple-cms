@@ -61,3 +61,12 @@
 4. 运行 `/design requirement.md` 会在需求文档所在目录生成 `design.md`，需要人仔细审核修改
 5. 运行 `/task-split design.md` 会先生成父任务，同意后再生成完整 `task.md`
 6. `task.md` 中会有多个任务，运行 `/task-exec task.md 任务编号`开始执行任务
+
+## 开发过程全记录
+
+1. [使用 Claude Code 做个 CMS（一）](https://mp.weixin.qq.com/s/PZwiYSFl7tPMcQCcdddsSA)
+2. [使用 Claude Code 做个 CMS（二）](https://mp.weixin.qq.com/s/vfAonJi1d7r3e-YXW6Imsw)
+3. [使用 Claude Code 做个 CMS（三）](https://mp.weixin.qq.com/s/VnN5iH10X3ji7LF1FY0HUg)
+4. [使用 Claude Code 做个 CMS（四）](https://mp.weixin.qq.com/s/Fg62V1mqAYrKp6mRnDyLrg)
+5. [使用 Claude Code 做个 CMS（五）](https://mp.weixin.qq.com/s/I2YwHbs6GvEFNL6mvPIUoA)
+6. [使用 Claude Code 做个 CMS（六）](https://mp.weixin.qq.com/s/Ccy2u1pUNUKDp4TEtDbQmg)
